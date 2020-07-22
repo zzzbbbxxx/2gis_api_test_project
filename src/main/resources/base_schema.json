@@ -1,0 +1,47 @@
+{
+  "title": "...",
+  "description": "...",
+  "type": "object",
+  "properties": {
+    "total": {
+      "description": "The unique identifier for a product",
+      "type": "integer"
+    },
+    "items": {
+      "description": "Tags for the product",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "...",
+            "type": "integer"
+          },
+          "name": {
+            "description": "...",
+            "type": "string"
+          },
+          "code": {
+            "description": "...",
+            "type": "string"
+          },
+          "country": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              }
+            },
+            "required": [ "name", "code"]
+          }
+        },
+        "required": ["id","name", "code","country"]
+      }
+    }
+  },
+  "required": [ "total", "items"]
+}
