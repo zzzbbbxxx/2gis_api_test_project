@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="2gis_API_test_project" />
+        <module name="2gis_api_test_project" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11">
-      <module name="2gis_API_test_project" target="1.8" />
+      <module name="2gis_api_test_project" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

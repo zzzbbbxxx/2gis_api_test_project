@@ -1,98 +1,100 @@
 import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
-import kong.unirest.Unirest;
-import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
-import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.*;
 
-public class reqWithParamQ {
+public class reqWithParamQ extends reqBase {
 
 
-        public boolean validationSchema(JSONObject jsonSchema, JSONObject json) {
 
-                Schema schema = SchemaLoader.load(jsonSchema);
+        // q = 0 symbols/empty - status code == 200
+        // q = 0 symbols/empty - structure of json for response with error == errorscheme
+        @Test
+        public void test1() {
 
-                try {
-                        schema.validate(json);
-                        return true;
-                } catch (ValidationException e) {
-                        return false;
+                HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                        ("https://regions-test.2gis.com/1.0/regions","?q");
+
+                if (!checkStatus(200,jsonResponse.getStatus())) {
+
+                } else {
+                        JSONObject jsonExpected =
+                                new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream("/json_with_error_for_q_param.json")));
+
+                        org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+                        boolean validation = validationSchema
+                                ("error_schema_for_param_q.json",
+                                        jsonObject);
+                        assertTrue(validation,"Response must be equal ErrorSchema,\n"
+                        +"Response Expected: "+ jsonExpected+"\n"
+                        +"Responce Actual: "+ jsonObject);
                 }
 
         }
 
+
+        // q = 1,2 symbols
         @Test
-        public void shouldReturnStatusOkay_() {
+        public void test2() {
+
+                List<String> list = Arrays.asList("но", "н");
+
+                for (String x : list) {
+
+                        HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                                ("https://regions-test.2gis.com/1.0/regions", "?q="+x);
 
 
+                        JSONObject jsonExpected =
+                                new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream("/json_with_error_for_q_param.json")));
 
-                HttpResponse<JsonNode> jsonResponse
-                        = Unirest.get("https://regions-test.2gis.com/1.0/regions")
-                        .header("accept", "application/json")
-                        .asJson();
+                        org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
 
-                HttpResponse<JsonNode> jsonResponse1 = Unirest.get("https://regions-test.2gis.com/1.0/regions")
-                        .queryString("q", "нов")
-                        .asJson();
+                        boolean validation = validationSchema
+                                ("error_schema_for_param_q.json",
+                                        jsonObject);
 
-                // Results in "http://httpbin.org?fruit=apple&droid=R2D2"
+                        assertTrue(validation, "Param 'q' == "+ x + "\n"
+                                + "Response must be equal ErrorSchema,\n"
+                                + "Response Expected: " + jsonExpected + "\n"
+                                + "Responce Actual: " + jsonObject);
 
-                assertNotNull(jsonResponse.getBody());
-                assertEquals(200, jsonResponse.getStatus());
-                System.out.println(jsonResponse.getBody());
-                System.out.println(jsonResponse1.getBody());
-
-                String responseJSONString = jsonResponse.getBody().toString();
+                }
 
         }
 
 
+        // q = 3 symbols & successful search
         @Test
-        public void givenInvalidInput_whenValidating_thenInvalid() {
+        public void test3() {
 
-                JSONObject jsonSchema = new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream("/test_schema.json")));
-                JSONObject jsonSubject = new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream("/product_invalid.json")));
+                org.json.JSONObject jsonResponse = sendRequestGetJSON
+                        ("https://regions-test.2gis.com/1.0/regions",
+                                "?q=нов");
 
-                Schema schema = SchemaLoader.load(jsonSchema);
-                schema.validate(jsonSubject);
+
+                assertEquals(22, 22);
+
         }
 
+
+        // q = 3 symbols & unsuccessful search
         @Test
-        public void givenValidInput_whenValidating_thenValid() {
+        public void test4() {
 
-                JSONObject jsonSchema = new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream("/test_schema.json")));
-                JSONObject jsonSubject = new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream("/product_valid.json")));
+                org.json.JSONObject jsonResponse = sendRequestGetJSON("https://regions-test.2gis.com/1.0/regions","");
 
-                Schema schema = SchemaLoader.load(jsonSchema);
-                schema.validate(jsonSubject);
+                int total = jsonResponse.getInt("total");
+
+                assertEquals(22, total);
+
         }
 
-        @Test
-        public void givenValidInput_whenValidating_thenValid11() {
 
-
-                HttpResponse<JsonNode> jsonResponse
-                        = Unirest.get("https://regions-test.2gis.com/1.0/regions?q=нов")
-                        .header("accept", "application/json")
-                        .asJson();
-
-
-                JSONObject jsonSchema = new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream("/base_schema.json")));
-                JSONObject jsonSubject = new JSONObject(jsonResponse.getBody().toString());
-
-                System.out.println(jsonResponse);
-                System.out.println(jsonResponse.getBody().toString());
-
-                Schema schema = SchemaLoader.load(jsonSchema);
-
-                schema.validate(jsonSubject);
-        }
 
 }

@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "...",
+  "description": "...",
+  "type": "object",
+  "properties": {
+    "error": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "message": {
+          "pattern": "Параметр 'q' должен быть не менее 3 символов",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "message"
+      ]
+    }
+  },
+  "required": ["error"],
+  "additionalProperties":false
+}
+
+
+

@@ -18,9 +18,11 @@ public class reqDefault extends reqBase {
         @Test
         public void test1() {
 
-                int status = sendRequestGetStatus("https://regions-test.2gis.com/1.0/regions","");
+                org.json.JSONObject jsonResponse = sendRequestGetJSON
+                        ("https://regions-test.2gis.com/1.0/regions",
+                                "");
 
-                assertEquals(200, status);
+                assertEquals(200, jsonResponse);
 
         }
 
@@ -29,7 +31,9 @@ public class reqDefault extends reqBase {
         @Test
         public void test2() {
 
-                org.json.JSONObject jsonResponse = sendRequestGetResponse("https://regions-test.2gis.com/1.0/regions","");
+                org.json.JSONObject jsonResponse = sendRequestGetJSON
+                        ("https://regions-test.2gis.com/1.0/regions",
+                                "");
 
                 boolean validation = validationSchema("/base_schema.json",jsonResponse);
 
@@ -41,11 +45,13 @@ public class reqDefault extends reqBase {
         @Test
         public void test3() {
 
-                org.json.JSONObject jsonResponse = sendRequestGetResponse("https://regions-test.2gis.com/1.0/regions","");
+                org.json.JSONObject jsonResponse = sendRequestGetJSON
+                        ("https://regions-test.2gis.com/1.0/regions",
+                                "");
 
                 int total = jsonResponse.getInt("total");
 
-                assertEquals(22, total);
+                assertEquals(21, total);
 
         }
 
