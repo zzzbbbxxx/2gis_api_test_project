@@ -1,10 +1,7 @@
 import kong.unirest.HttpResponse;
 import org.json.JSONObject;
-import org.json.JSONTokener;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.testng.Assert.*;
 
@@ -12,23 +9,32 @@ public class reqWithParamQ extends reqBase {
 
 
 
-        // q = 0 symbols/empty - status code == 200
-        // q = 0 symbols/empty - structure of json for response with error == errorscheme
-        @Test
-        public void test1() {
+        //This function will provide the patameter data
+        @DataProvider(name = "Data-Provider-Function_test1")
+        public Object[][] parameterTestProvider_test1() {
+            return new Object[][] {
+                    {"q=но"}, {"q=н"}, {"q="}, {"q"}
+                    };
+        }
+
+        // for q = 0 symbols/empty, 1 symbols, 2 symbols...
+        // ...status code = 200
+        // ...structure of json = errorscheme
+        @Test(dataProvider = "Data-Provider-Function_test1")
+        public void test1(String q)  {
 
                 HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                        ("https://regions-test.2gis.com/1.0/regions","?q");
+                        (path,q);
 
                 if (!checkStatus(200,jsonResponse.getStatus())) {
 
                 } else {
-                        JSONObject jsonExpected =
-                                new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream("/json_with_error_for_q_param.json")));
+                        JSONObject jsonExpected = getJSONfromJSONFile(jsonExampleQError);
 
-                        org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+                        org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
+
                         boolean validation = validationSchema
-                                ("error_schema_for_param_q.json",
+                                (schemaExampleQError,
                                         jsonObject);
                         assertTrue(validation,"Response must be equal ErrorSchema,\n"
                         +"Response Expected: "+ jsonExpected+"\n"
@@ -38,62 +44,142 @@ public class reqWithParamQ extends reqBase {
         }
 
 
-        // q = 1,2 symbols
-        @Test
-        public void test2() {
 
-                List<String> list = Arrays.asList("но", "н");
-
-                for (String x : list) {
-
-                        HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                                ("https://regions-test.2gis.com/1.0/regions", "?q="+x);
-
-
-                        JSONObject jsonExpected =
-                                new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream("/json_with_error_for_q_param.json")));
-
-                        org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
-
-                        boolean validation = validationSchema
-                                ("error_schema_for_param_q.json",
-                                        jsonObject);
-
-                        assertTrue(validation, "Param 'q' == "+ x + "\n"
-                                + "Response must be equal ErrorSchema,\n"
-                                + "Response Expected: " + jsonExpected + "\n"
-                                + "Responce Actual: " + jsonObject);
-
-                }
-
+         //This function will provide the patameter data
+         @DataProvider(name = "Data-Provider-Function-test2")
+         public Object[][] parameterTestProvider_test2() {
+            return new Object[][] {
+                    {"нов"}, {"ирс"}
+                    };
         }
 
-
         // q = 3 symbols & successful search
-        @Test
-        public void test3() {
+        // 1. q = нов -> НОВосибирск
+        // 2. q = ирс -> новосибИРСк
+        @Test(dataProvider = "Data-Provider-Function-test2")
+        public void test2(String q) {
 
-                org.json.JSONObject jsonResponse = sendRequestGetJSON
-                        ("https://regions-test.2gis.com/1.0/regions",
-                                "?q=нов");
+                HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                        (path, "?q="+q);
 
+                JSONObject jsonExpected = getJSONfromJSONFile(jsonExampleQSuccessSearch);
 
-                assertEquals(22, 22);
+                org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+
+                boolean validation = validationSchema
+                        ("/q/param_q_scheme_for_success_search_for_3_symbols.json",
+                                jsonObject);
+
+                assertTrue(validation, "Response for param q=\"нов\" must be equal schema,\n"
+                        + "Response Expected: " + jsonExpected + "\n"
+                        + "Responce Actual: " + jsonObject);
+
 
         }
 
 
         // q = 3 symbols & unsuccessful search
         @Test
-        public void test4() {
+        public void test3() {
 
-                org.json.JSONObject jsonResponse = sendRequestGetJSON("https://regions-test.2gis.com/1.0/regions","");
+                HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                        (path, "?q="+"нос");
 
-                int total = jsonResponse.getInt("total");
+                JSONObject jsonExpected = getJSONfromJSONFile("/param_q_json_success_example_for_3_symbols.json");
 
-                assertEquals(22, total);
+                org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+
+                boolean validation = validationSchema
+                        ("param_q_json_unsuccess_example_for_3_symbols.json",
+                                jsonObject);
+
+                assertTrue(validation, "Response for param q=\"нос\" must be equal schema,\n"
+                        + "Response Expected: " + jsonExpected + "\n"
+                        + "Responce Actual: " + jsonObject);
 
         }
+
+         // q = UPcase registry
+         @Test
+         public void test4() {
+             HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                (path, "?q="+"НОВ");
+
+             JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
+
+             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+
+             boolean validation = validationSchema
+                ("q/param_q_scheme_for_success_search_for_3_symbols.json",
+                        jsonObject);
+
+             assertTrue(validation, "Response for param q=\"нов\" must be equal schema,\n"
+                + "Response Expected: " + jsonExpected + "\n"
+                + "Responce Actual: " + jsonObject);
+
+        }
+
+        // q = search by full name
+        @Test
+        public void test5() {
+
+            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                (path, "?q="+"Новосибирск");
+
+            JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
+
+            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+
+            boolean validation = validationSchema
+                ("q/param_q_scheme_for_success_search_for_3_symbols.json",
+                        jsonObject);
+
+            assertTrue(validation, "Response for param q=\"нов\" must be equal schema,\n"
+                + "Response Expected: " + jsonExpected + "\n"
+                + "Responce Actual: " + jsonObject);
+
+        }
+
+
+
+    //This function will provide the patameter data
+        @DataProvider(name = "Data-Provider-Function-test6")
+         public Object[][] parameterTestProvider_test6() {
+            return new Object[][] {
+
+                    //  если бы второй параметр работал - то в ответе остался бы только один город
+                    {"?q=горс&country_code=ru"},
+
+                    // если бы второй параметр работал - то ответ пришёл бы пустым (без городов)
+                    {"?q=горс&page=5"},
+
+                    // если бы второй параметр работал - то в ответе пришло бы сообщение об ошибке
+                    {"?q=горс&page_size=1"}
+                };
+        }
+
+    // q - other params must be ignored
+       @Test(dataProvider = "Data-Provider-Function-test6")
+       public void test6(String q) {
+
+            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                (path, q);
+
+            JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_with_country_code_param.json");
+
+            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+
+            boolean validation = validationSchema
+                ("q/param_q_scheme_for_search_with_country_code_param.json",
+                        jsonObject);
+
+            assertTrue(validation, "Response for param q=\"нов\" must be equal schema,\n"
+                + "Response Expected: " + jsonExpected + "\n"
+                + "Responce Actual: " + jsonObject);
+
+        }
+
+
 
 
 

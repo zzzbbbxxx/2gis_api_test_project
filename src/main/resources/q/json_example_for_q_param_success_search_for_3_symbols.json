@@ -1,0 +1,23 @@
+{
+  "total": 22,
+  "items": [
+    {
+      "id": 19,
+      "name": "Нижний Новгород",
+      "code": "n_novgorod",
+      "country": {
+        "name": "Россия",
+        "code": "ru"
+      }
+    },
+    {
+      "id": 1,
+      "name": "Новосибирск",
+      "code": "novosibirsk",
+      "country": {
+        "name": "Россия",
+        "code": "ru"
+      }
+    }
+  ]
+}

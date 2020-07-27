@@ -14,44 +14,43 @@ public class reqDefault extends reqBase {
 
 
 
-        // code 200
+        // status code = 200
         @Test
         public void test1() {
 
-                org.json.JSONObject jsonResponse = sendRequestGetJSON
-                        ("https://regions-test.2gis.com/1.0/regions",
-                                "");
+                HttpResponse<JsonNode> jsonResponse = sendRequestGetResponse
+                        (path,"");
 
-                assertEquals(200, jsonResponse);
+
+                assertEquals(200, jsonResponse.getStatus());
 
         }
 
 
-        // structure of json
+        // structure of json are correct ( contains all keys,params )
         @Test
         public void test2() {
 
                 org.json.JSONObject jsonResponse = sendRequestGetJSON
-                        ("https://regions-test.2gis.com/1.0/regions",
-                                "");
+                        (path,"");
 
-                boolean validation = validationSchema("/base_schema.json",jsonResponse);
+
+                boolean validation = validationSchema(baseSchema,jsonResponse);
 
                 assertTrue(validation);
         }
 
 
-        // total = 22
+        // value for key total = 22
         @Test
         public void test3() {
 
                 org.json.JSONObject jsonResponse = sendRequestGetJSON
-                        ("https://regions-test.2gis.com/1.0/regions",
-                                "");
+                        (path,"");
 
                 int total = jsonResponse.getInt("total");
 
-                assertEquals(21, total);
+                assertEquals(22, total);
 
         }
 

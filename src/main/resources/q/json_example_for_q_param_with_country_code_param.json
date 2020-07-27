@@ -1,0 +1,23 @@
+{
+  "total": 22,
+  "items": [
+    {
+      "id": 26,
+      "name": "Магнитогорск",
+      "code": "magnitogorsk",
+      "country": {
+        "name": "Россия",
+        "code": "ru"
+      }
+    },
+    {
+      "id": 91,
+      "name": "Усть-Каменогорск",
+      "code": "ustkam",
+      "country": {
+        "name": "Казахстан",
+        "code": "kz"
+      }
+    }
+  ]
+}

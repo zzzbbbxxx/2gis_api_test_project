@@ -1,0 +1,54 @@
+{
+  "title": "...",
+  "description": "...",
+  "type": "object",
+  "properties": {
+    "total": {
+      "description": "The unique identifier for a product",
+      "type": "integer"
+    },
+    "items": {
+      "description": "Tags for the product",
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "...",
+            "type": "integer",
+            "enum": [91, 26]
+          },
+          "name": {
+            "description": "...",
+            "type": "string",
+            "enum": ["Усть-Каменогорск", "Магнитогорск"]
+          },
+          "code": {
+            "description": "...",
+            "type": "string",
+            "enum": ["magnitogorsk","ustkam"]
+          },
+          "country": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": ["Россия","Казахстан"]
+              },
+              "code": {
+                "type": "string",
+                "enum": ["ru","kz"]
+              }
+            },
+            "required": [ "name", "code"]
+          }
+        },
+        "required": ["id","name", "code","country"]
+      }
+    }
+  },
+  "required": [ "total", "items"]
+}
+
+

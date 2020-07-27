@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "...",
+  "description": "...",
+  "type": "object",
+  "properties": {
+    "total": {
+      "description": "...",
+      "type": "integer"
+    },
+    "items": {
+      "description": "...",
+      "type": "array",
+      "maximum": 0
+    }
+  },
+  "required": ["total", "items"]
+}

@@ -4,13 +4,26 @@ import kong.unirest.Unirest;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
 
 public class reqBase {
+
+
+        public static String path = "https://regions-test.2gis.com/1.0/regions";
+
+        public static String baseSchema = "base_schema.json";
+
+        public static String jsonExampleQSuccessSearch = "q/json_example_for_q_param_success_search_for_3_symbols.json";
+        public static String jsonExampleQError = "q/json_example_for_q_param_with_error.json";
+
+        public static String schemaExampleQSuccessSearch = "q/param_q_scheme_for_success_search_for_3_symbols.json";
+        public static String schemaExampleQUnsuccessSearch = "q/param_q_scheme_for_unsuccess_search_for_3_symbols.json";
+        public static String schemaExampleQError = "q/param_q_error_schema_for_0_1_2_symbols.json";
+
 
 
 
@@ -86,6 +99,17 @@ public class reqBase {
 
 
         //
+        public JSONObject getJSONfromJSONFile (String path) {
+
+                JSONObject json =
+                        new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream
+                                (path)));
+
+                return json;
+        }
+
+
+        //
         public boolean checkStatus (int statusE, int statusR) {
 
                 try {
@@ -98,8 +122,6 @@ public class reqBase {
                 }
 
                 return true;
-
-
 
         }
 

@@ -1,0 +1,54 @@
+{
+  "title": "...",
+  "description": "...",
+  "type": "object",
+  "properties": {
+    "total": {
+      "description": "The unique identifier for a product",
+      "type": "integer"
+    },
+    "items": {
+      "description": "Tags for the product",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "...",
+            "type": "integer",
+            "enum": [19, 1]
+          },
+          "name": {
+            "description": "...",
+            "type": "string",
+            "enum": ["Нижний Новгород", "Новосибирск"]
+          },
+          "code": {
+            "description": "...",
+            "type": "string",
+            "enum": ["novosibirsk","n_novgorod"]
+          },
+          "country": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": ["Россия"]
+              },
+              "code": {
+                "type": "string",
+                "enum": ["ru"]
+              }
+            },
+            "required": [ "name", "code"]
+          }
+        },
+        "required": ["id","name", "code","country"]
+      }
+    }
+  },
+  "required": [ "total", "items"]
+}
+
+
