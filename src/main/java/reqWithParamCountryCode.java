@@ -23,7 +23,7 @@ public class reqWithParamCountryCode extends reqBase {
         @DataProvider(name = "Data-Provider-Function_test7")
         public Object[][] parameterTestProvider_test7() {
             return new Object[][] {
-                    {"country_code"}, {"country_code="}, {"country_code=us"}
+                    {"?country_code"}, {"?country_code="}, {"?country_code=us"}
                     };
         }
 
@@ -60,7 +60,9 @@ public class reqWithParamCountryCode extends reqBase {
                 {"?country_code=","ru"},
                 {"?country_code=","kg"},
                 {"?country_code=","kz"},
-                {"?country_code=","cz"}
+                {"?country_code=","cz"},
+                {"?country_code=","ua"}
+
         };
     }
 

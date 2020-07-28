@@ -85,16 +85,14 @@ public class reqWithParamQ extends reqBase {
                 HttpResponse<String> jsonResponse = sendRequestGetResponseString
                         (path, "?q="+"нос");
 
-                JSONObject jsonExpected = getJSONfromJSONFile("/param_q_json_success_example_for_3_symbols.json");
+            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
 
-                org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
-
-                boolean validation = validationSchema
-                        ("param_q_json_unsuccess_example_for_3_symbols.json",
+            boolean validation = validationSchema
+                        ("q\\param_q_scheme_for_unsuccess_search_for_3_symbols.json",
                                 jsonObject);
 
                 assertTrue(validation, "Response for param q=\"нос\" must be equal schema,\n"
-                        + "Response Expected: " + jsonExpected + "\n"
+                        + "Response Expected: empty array items \n"
                         + "Responce Actual: " + jsonObject);
 
         }
