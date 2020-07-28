@@ -1,0 +1,95 @@
+{
+  "total": 22,
+  "items": [
+    {
+      "id": 196,
+      "name": "Актау",
+      "code": "aktau",
+      "country": {
+        "name": "Казахстан",
+        "code": "kz"
+      }
+    },
+    {
+      "id": 167,
+      "name": "Актобе",
+      "code": "aktobe",
+      "country": {
+        "name": "Казахстан",
+        "code": "kz"
+      }
+    },
+    {
+      "id": 67,
+      "name": "Алматы",
+      "code": "almaty",
+      "country": {
+        "name": "Казахстан",
+        "code": "kz"
+      }
+    },
+    {
+      "id": 112,
+      "name": "Бишкек",
+      "code": "bishkek",
+      "country": {
+        "name": "Кыргызстан",
+        "code": "kg"
+      }
+    },
+    {
+      "id": 114,
+      "name": "Владикавказ",
+      "code": "vladikavkaz",
+      "country": {
+        "name": "Россия",
+        "code": "ru"
+      }
+    },
+    {
+      "id": 25,
+      "name": "Владивосток",
+      "code": "vladivostok",
+      "country": {
+        "name": "Россия",
+        "code": "ru"
+      }
+    },
+    {
+      "id": 105,
+      "name": "Днепр",
+      "code": "dnepropetrovsk",
+      "country": {
+        "name": "Украина",
+        "code": "ua"
+      }
+    },
+    {
+      "id": 7,
+      "name": "Красноярск",
+      "code": "krasnoyarsk",
+      "country": {
+        "name": "Россия",
+        "code": "ru"
+      }
+    },
+    {
+      "id": 26,
+      "name": "Магнитогорск",
+      "code": "magnitogorsk",
+      "country": {
+        "name": "Россия",
+        "code": "ru"
+      }
+    },
+    {
+      "id": 32,
+      "name": "Москва",
+      "code": "moscow",
+      "country": {
+        "name": "Россия",
+        "code": "ru"
+      }
+    }
+  ]
+}

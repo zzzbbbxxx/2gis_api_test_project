@@ -5,14 +5,12 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class reqWithParamPage extends reqBase {
+public class reqWithParamPageSize extends reqBase {
 
 
 
@@ -95,17 +93,21 @@ public class reqWithParamPage extends reqBase {
 
 
 
-        //"Перелистывание" страниц / у
-        @Test
-        public void test12() {
+        //This function will provide the patameter data
+        @DataProvider(name = "Data-Provider-Function-test12")
+        public Object[][] parameterTestProvider_test12() {
+            return new Object[][] {
+                {"?page=1"},
+                {"?page=2"},
+                {"?page=3"}
+            };
+        }
 
-            List<String> pages = Arrays.asList("?page=1","?page=2","?page=3");
-            List<String> listOfRegions =  new ArrayList<>();
-            int _page = 0;
 
-            for (String q : pages) {
+        //"Перелистывание" страниц
+        @Test(dataProvider = "Data-Provider-Function-test12")
+        public void test12(String q) {
 
-                _page++;
             HttpResponse<String> jsonResponse = sendRequestGetResponseString
                     (path,q);
 
@@ -117,8 +119,7 @@ public class reqWithParamPage extends reqBase {
 
                 JSONArray tmpObj = jsonObject.getJSONArray("items");
 
-                List<String> _listOfRegions =  new ArrayList<>();
-
+                List<String> listOfRegions = null;
 
                 JSONObject mJsonObject = new JSONObject();
 
@@ -127,32 +128,20 @@ public class reqWithParamPage extends reqBase {
                     mJsonObject = (JSONObject)tmpObj.get(i);
 
                     String name = mJsonObject.get("name").toString();
-                    _listOfRegions.add(name);
-
-                    Assert.assertTrue(arrayContains(name, listOfRegions),
-                            "List of regions before error: "+listOfRegions+"\n"
-                    +"Region: "+name+" is already was in response\n"
-                    +"Current page: "+q+"\n"
-                    +"List of regions on the errorPage: "+_listOfRegions+"\n");
-
-                    if (i==5) listOfRegions.add("\n");
-
-
                     listOfRegions.add(name);
-                }
-                listOfRegions.add(":"+q+" ");
 
+                    Assert.assertTrue(arrayContains(name, listOfRegions));
+                }
             }
-          }
         }
 
         public boolean arrayContains(String value, List<String> arr ) {
             for (String item : arr) {
                 if (item.equals(value)) {
-                    return false;
+                    return true;
                     }
                 }
-            return true;
+            return false;
         }
 
 }
