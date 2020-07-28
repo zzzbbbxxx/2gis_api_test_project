@@ -3,25 +3,29 @@ import org.json.JSONObject;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertTrue;
 
-public class reqWithParamQ extends reqBase {
+public class reqWithParamPage extends reqBase {
 
 
 
         //This function will provide the patameter data
-        @DataProvider(name = "Data-Provider-Function_test1")
-        public Object[][] parameterTestProvider_test1() {
+        @DataProvider(name = "Data-Provider-Function_test10")
+        public Object[][] parameterTestProvider_test10() {
             return new Object[][] {
-                    {"?q=но"}, {"?q=н"}, {"?q="}, {"?q"}
+                    {"?page"},
+                    {"?page="},
+                    {"?page=0"},
+                    {"?page=1.5"},
+                    {"?page=one"}
                     };
         }
 
         // for q = 0 symbols/empty, 1 symbols, 2 symbols...
         // ...status code = 200
         // ...structure of json = errorscheme
-        @Test(dataProvider = "Data-Provider-Function_test1")
-        public void test1(String q)  {
+        @Test(dataProvider = "Data-Provider-Function_test10")
+        public void test10(String q)  {
 
                 HttpResponse<String> jsonResponse = sendRequestGetResponseString
                         (path,q);
@@ -29,12 +33,12 @@ public class reqWithParamQ extends reqBase {
                 if (!checkStatus(200,jsonResponse.getStatus())) {
 
                 } else {
-                        JSONObject jsonExpected = getJSONfromJSONFile(jsonExampleQError);
+                        JSONObject jsonExpected = getJSONfromJSONFile("page\\json_example_for_page_param_with_error.json");
 
-                        org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
+                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
                         boolean validation = validationSchema
-                                (schemaExampleQError,
+                                ("page\\param_page_code_error_schema.json",
                                         jsonObject);
                         assertTrue(validation,"Response must be equal ErrorSchema,\n"
                         +"Response Expected: "+ jsonExpected+"\n"
@@ -64,7 +68,7 @@ public class reqWithParamQ extends reqBase {
 
                 JSONObject jsonExpected = getJSONfromJSONFile(jsonExampleQSuccessSearch);
 
-                org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+                JSONObject jsonObject = new JSONObject(jsonResponse.getBody().toString());
 
                 boolean validation = validationSchema
                         ("/q/param_q_scheme_for_success_search_for_3_symbols.json",
@@ -85,7 +89,7 @@ public class reqWithParamQ extends reqBase {
                 HttpResponse<String> jsonResponse = sendRequestGetResponseString
                         (path, "?q="+"нос");
 
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+            JSONObject jsonObject = new JSONObject(jsonResponse.getBody().toString());
 
             boolean validation = validationSchema
                         ("q\\param_q_scheme_for_unsuccess_search_for_3_symbols.json",
@@ -105,7 +109,7 @@ public class reqWithParamQ extends reqBase {
 
              JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
 
-             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+             JSONObject jsonObject = new JSONObject(jsonResponse.getBody().toString());
 
              boolean validation = validationSchema
                 ("q/param_q_scheme_for_success_search_for_3_symbols.json",
@@ -126,7 +130,7 @@ public class reqWithParamQ extends reqBase {
 
             JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
 
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+            JSONObject jsonObject = new JSONObject(jsonResponse.getBody().toString());
 
             boolean validation = validationSchema
                 ("q/param_q_scheme_for_success_search_for_3_symbols.json",
@@ -165,7 +169,7 @@ public class reqWithParamQ extends reqBase {
 
             JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_with_country_code_param.json");
 
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+            JSONObject jsonObject = new JSONObject(jsonResponse.getBody().toString());
 
             boolean validation = validationSchema
                 ("q/param_q_scheme_for_search_with_country_code_param.json",
