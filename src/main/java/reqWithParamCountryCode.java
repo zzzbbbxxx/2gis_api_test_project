@@ -53,18 +53,18 @@ public class reqWithParamCountryCode extends reqBase {
 
 
 
-    //This function will provide the patameter data
-    @DataProvider(name = "Data-Provider-Function_test8")
-    public Object[][] parameterTestProvider_test8() {
-        return new Object[][] {
+        //This function will provide the patameter data
+        @DataProvider(name = "Data-Provider-Function_test8")
+        public Object[][] parameterTestProvider_test8() {
+            return new Object[][] {
                 {"?country_code=","ru"},
                 {"?country_code=","kg"},
                 {"?country_code=","kz"},
                 {"?country_code=","cz"},
                 {"?country_code=","ua"}
+                };
+            }
 
-        };
-    }
 
     // country_code =  {ru, kg, kz, cz}
     @Test(dataProvider = "Data-Provider-Function_test8")
@@ -80,18 +80,14 @@ public class reqWithParamCountryCode extends reqBase {
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-
             JSONArray tmpObj = jsonObject.getJSONArray("items");
-
 
             JSONObject mJsonObject = new JSONObject();
 
             for (int i = 0; i < tmpObj.length() ; i++) {
 
                 mJsonObject = (JSONObject)tmpObj.get(i);
-              //  System.out.println(mJsonObject);
                 mJsonObject = mJsonObject.getJSONObject("country");
-              //  System.out.println(mJsonObject);
                 String code = mJsonObject.get("code").toString();
 
                 assertEquals(q2,code,"Code Country in response must be equal Code in request,\n"
@@ -103,73 +99,5 @@ public class reqWithParamCountryCode extends reqBase {
         }
 
     }
-
-
-
-
-    //This function will provide the patameter data
-    @DataProvider(name = "Data-Provider-Function_test9")
-    public Object[][] parameterTestProvider_test9() {
-        return new Object[][] {
-                {"?page_size=5&","page=1"},
-                {"?page_size=5&","page=2"},
-                {"?page_size=5&","page=3"},
-                {"?page_size=5&","page=4"},
-                {"?page_size=5&","page=5"},
-                {"?page_size=5&","page=6"},
-
-        };
-    }
-
-    // country_code =  default
-    @Test(dataProvider = "Data-Provider-Function_test9")
-    public void test9(String q1, String q2) throws NoSuchFieldException, IllegalAccessException {
-
-        HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                (path,q1+q2);
-
-        if (!checkStatus(200,jsonResponse.getStatus())) {
-
-        } else {
-
-            JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-
-
-            JSONArray tmpObj = jsonObject.getJSONArray("items");
-
-
-            JSONObject mJsonObject = new JSONObject();
-
-            for (int i = 0; i < tmpObj.length() ; i++) {
-
-                mJsonObject = (JSONObject)tmpObj.get(i);
-                //  System.out.println(mJsonObject);
-                mJsonObject = mJsonObject.getJSONObject("country");
-                //  System.out.println(mJsonObject);
-                String code = mJsonObject.get("code").toString();
-
-                List<String> list = Arrays.asList("ru", "kg", "kz", "cz");
-                Assert.assertTrue(arrayContains(code, list),
-                        "Code Country in response must be equal Code in {ru,kg, kz,cz}\n"
-                        +"Expected code response: " + code + "\n"
-                        +"Actual Response: "+ (JSONObject)tmpObj.get(i));
-            }
-
-
-        }
-
-    }
-
-    public boolean arrayContains(String value, List<String> arr ) {
-        for (String item : arr) {
-            if (item.equals(value)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-
 
 }

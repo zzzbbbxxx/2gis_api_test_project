@@ -11,6 +11,9 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -79,7 +82,7 @@ public class reqDefault extends reqBase {
 
                 }
         }
-        
+
 
 
         //This function will provide the patameter data
@@ -114,6 +117,68 @@ public class reqDefault extends reqBase {
                                         + "Default: " + jsonObject2);
 
 
+        }
+
+
+
+        
+
+        //This function will provide the patameter data
+        @DataProvider(name = "Data-Provider-Function_test9")
+        public Object[][] parameterTestProvider_test9() {
+                return new Object[][] {
+                        {"?page_size=5&","page=1"},
+                        {"?page_size=5&","page=2"},
+                        {"?page_size=5&","page=3"},
+                        {"?page_size=5&","page=4"},
+                        {"?page_size=5&","page=5"},
+                        {"?page_size=5&","page=6"},
+
+                };
+        }
+
+        // country_code by default must be show all regions for all countries
+        // я мог написать тест двумя способами:
+        // исходя из документации - проверяя, что все страны из списка
+        // ... есть в ответе
+        // или исходя из знания, что в списке отсутствует "ua"
+        // в первом случае будет ошибка, потому что я ищу только страны из списка и "падаю",
+        // ...если появляется то, чего я не жду
+
+        @Test(dataProvider = "Data-Provider-Function_test9")
+        public void test9(String q1, String q2) {
+
+                HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                        (path,q1+q2);
+
+                if (!checkStatus(200,jsonResponse.getStatus())) {
+
+                } else {
+
+                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+                        JSONArray tmpObj = jsonObject.getJSONArray("items");
+                        JSONObject mJsonObject = new JSONObject();
+
+                        for (int i = 0; i < tmpObj.length() ; i++) {
+
+                                mJsonObject = (JSONObject)tmpObj.get(i);
+                                String code = mJsonObject.getJSONObject("country").get("code").toString();
+                                List<String> list = Arrays.asList("ru", "kg", "kz", "cz");
+                                Assert.assertTrue(arrayContains(code, list),
+                                        "Code for countries by default de must be in {ru,kg, kz,cz} \n"
+                                                +"Expected code response: " + code + "\n"
+                                                +"Actual Response: "+ (JSONObject)tmpObj.get(i));
+                        }
+                }
+        }
+
+        public boolean arrayContains(String value, List<String> arr ) {
+                for (String item : arr) {
+                        if (item.equals(value)) {
+                                return true;
+                        }
+                }
+                return false;
         }
 
 
