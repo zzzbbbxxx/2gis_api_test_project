@@ -58,7 +58,7 @@ public class reqDefault extends reqBase {
 
 
 
-        // page_size default contains must be contains 15 regions
+        // page_size default must be contains 15 regions
         @Test
         public void test13() {
 
@@ -72,7 +72,7 @@ public class reqDefault extends reqBase {
 
                         Assert.assertEquals(jsonObject.getJSONArray("items").length(),
                                 15,
-                                "Count of regions in response by default must be eque: 15 \n");
+                                "Count of regions in response by default must be equal: 15 \n");
 
 
                 }

@@ -90,7 +90,7 @@ public class reqWithParamCountryCode extends reqBase {
                             mJsonObject = (JSONObject)tmpObj.get(i);
                             String code = mJsonObject.getJSONObject("country").get("code").toString();
 
-                            assertEquals(q2,code,"Code Country for all regions in response \n" +
+                            assertEquals(q2,code,"Code country for all regions in response \n" +
                                     "must be equal code that we use in request,\n"
                                     +"Expected code response: " + q2 + "\n"
                                     +"Actual code in response: " + code + "\n"

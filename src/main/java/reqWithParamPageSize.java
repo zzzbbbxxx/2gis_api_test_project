@@ -25,7 +25,7 @@ public class reqWithParamPageSize extends reqBase {
             };
         }
 
-        // for page_size = empty, 0, 1.5, one
+        // Tests for page_size = empty, 1.5, one
         // ...status code = 200
         // ...structure of json = errorscheme
         @Test(dataProvider = "Data-Provider-Function-test14")
@@ -63,11 +63,12 @@ public class reqWithParamPageSize extends reqBase {
             };
             }
 
-        // for page_size = 0, 1, -1
-        // ...status code = 200
-        // ...structure of json = errorscheme
-        @Test(dataProvider = "Data-Provider-Function-test15")
-        public void test15(String q)  {
+         // Tests page_size = 0, 1, -1
+         // ...status code = 200
+         // ...structure of json = errorscheme
+         @Test(dataProvider = "Data-Provider-Function-test15")
+         public void test15(String q)  {
+
             HttpResponse<String> jsonResponse = sendRequestGetResponseString
                 (path,q);
             if (!checkStatus(200,jsonResponse.getStatus())) {
@@ -86,35 +87,34 @@ public class reqWithParamPageSize extends reqBase {
         }
 
 
-    //This function will provide the patameter data
-    @DataProvider(name = "Data-Provider-Function-test16")
-    public Object[][] parameterTestProvider_test16() {
-        return new Object[][] {
+        //This function will provide the patameter data
+        @DataProvider(name = "Data-Provider-Function-test16")
+        public Object[][] parameterTestProvider_test16() {
+             return new Object[][] {
                 {"?page_size=5",5},
                 {"?page_size=10",10},
                 {"?page_size=15",15}
 
-        };
-    }
+             };
+        }
 
-    // for page_size = 5, 10, 15
-    // ...status code = 200
-    // ...structure of json = errorscheme
-    @Test(dataProvider = "Data-Provider-Function-test16")
-    public void test16(String q, int i)  {
-        HttpResponse<String> jsonResponse = sendRequestGetResponseString
+
+        // Tests for page_size = 5, 10, 15
+        // ...status code = 200
+        // ...items in JSON must be equal page_size
+        @Test(dataProvider = "Data-Provider-Function-test16")
+        public void test16(String q, int i)  {
+
+            HttpResponse<String> jsonResponse = sendRequestGetResponseString
                 (path,q);
+
             if (!checkStatus(200, jsonResponse.getStatus())) {
 
             } else {
 
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-
                 JSONArray tmpObj = jsonObject.getJSONArray("items");
-
-                Assert.assertEquals(tmpObj.length(),i,"Count regions in response by default must be equel 15");
-
-
+                Assert.assertEquals(tmpObj.length(),i,"Count regions in response by default must be equel: "+i);
             }
         }
 
