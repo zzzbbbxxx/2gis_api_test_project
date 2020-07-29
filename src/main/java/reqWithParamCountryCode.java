@@ -23,11 +23,14 @@ public class reqWithParamCountryCode extends reqBase {
         @DataProvider(name = "Data-Provider-Function_test7")
         public Object[][] parameterTestProvider_test7() {
             return new Object[][] {
-                    {"?country_code"}, {"?country_code="}, {"?country_code=us"}
+                    {"?country_code"},
+                    {"?country_code="},
+                    {"?country_code=us"}
                     };
         }
 
-        // country_code = 0 symbols/empty, symbols not in {ru, kg, kz, cz}
+        // Tests for country_code = 0/empty symbols
+        // and ...not in set [ru, kg, kz, cz]
         @Test(dataProvider = "Data-Provider-Function_test7")
         public void test7(String q)  {
 
@@ -44,6 +47,7 @@ public class reqWithParamCountryCode extends reqBase {
                         boolean validation = validationSchema
                                 ("countrycode/param_country_code_error_schema.json",
                                         jsonObject);
+
                         assertTrue(validation,"Response must be equal ErrorSchema,\n"
                         +"Response Expected: "+ jsonExpected+"\n"
                         +"Responce Actual: "+ jsonObject);
@@ -66,35 +70,32 @@ public class reqWithParamCountryCode extends reqBase {
             }
 
 
-    // country_code =  {ru, kg, kz, cz}
-    @Test(dataProvider = "Data-Provider-Function_test8")
-    public void test8(String q1, String q2) throws NoSuchFieldException, IllegalAccessException {
+        // Tests for country_code =  [ru, kg, kz, cz]... and "ua" too
+        @Test(dataProvider = "Data-Provider-Function_test8")
+        public void test8(String q1, String q2) {
 
-        HttpResponse<String> jsonResponse = sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = sendRequestGetResponseString
                 (path,q1+q2);
 
-        if (!checkStatus(200,jsonResponse.getStatus())) {
+            if (!checkStatus(200,jsonResponse.getStatus())) {
+                } else
+                    {
 
-        } else {
-            JSONObject jsonExpected = getJSONfromJSONFile("countrycode/json_example_for_country_code_param_with_error.json");
+                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+                        JSONArray tmpObj = jsonObject.getJSONArray("items");
+                        JSONObject mJsonObject = new JSONObject();
 
-            JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+                        for (int i = 0; i < tmpObj.length() ; i++) {
 
-            JSONArray tmpObj = jsonObject.getJSONArray("items");
+                            mJsonObject = (JSONObject)tmpObj.get(i);
+                            String code = mJsonObject.getJSONObject("country").get("code").toString();
 
-            JSONObject mJsonObject = new JSONObject();
-
-            for (int i = 0; i < tmpObj.length() ; i++) {
-
-                mJsonObject = (JSONObject)tmpObj.get(i);
-                mJsonObject = mJsonObject.getJSONObject("country");
-                String code = mJsonObject.get("code").toString();
-
-                assertEquals(q2,code,"Code Country in response must be equal Code in request,\n"
-                        +"Expected code response: " + q2 + "\n"
-                        +"Actual Response: "+ (JSONObject)tmpObj.get(i));
+                            assertEquals(q2,code,"Code Country for all regions in response \n" +
+                                    "must be equal code that we use in request,\n"
+                                    +"Expected code response: " + q2 + "\n"
+                                    +"Actual code in response: " + code + "\n"
+                                    +"Actual Response: "+ (JSONObject)tmpObj.get(i));
             }
-
 
         }
 

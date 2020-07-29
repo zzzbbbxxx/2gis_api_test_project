@@ -13,30 +13,29 @@ public class reqWithParamQ extends reqBase {
         @DataProvider(name = "Data-Provider-Function_test1")
         public Object[][] parameterTestProvider_test1() {
             return new Object[][] {
-                    {"?q=но"}, {"?q=н"}, {"?q="}, {"?q"}
+                    {"?q=но"},
+                    {"?q=н"},
+                    {"?q="},
+                    {"?q"}
                     };
         }
 
-        // for q = 0 symbols/empty, 1 symbols, 2 symbols...
+        // tests for q = 0/empty, 1, 2 symbols...
         // ...status code = 200
         // ...structure of json = errorscheme
         @Test(dataProvider = "Data-Provider-Function_test1")
         public void test1(String q)  {
 
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                        (path,q);
+                HttpResponse<String> jsonResponse = sendRequestGetResponseString(path,q);
 
                 if (!checkStatus(200,jsonResponse.getStatus())) {
-
                 } else {
                         JSONObject jsonExpected = getJSONfromJSONFile(jsonExampleQError);
-
                         org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
-
                         boolean validation = validationSchema
                                 (schemaExampleQError,
                                         jsonObject);
-                        assertTrue(validation,"Response must be equal ErrorSchema,\n"
+                        assertTrue(validation,"Response must match the ErrorSchema,\n"
                         +"Response Expected: "+ jsonExpected+"\n"
                         +"Responce Actual: "+ jsonObject);
                 }
@@ -49,13 +48,14 @@ public class reqWithParamQ extends reqBase {
          @DataProvider(name = "Data-Provider-Function-test2")
          public Object[][] parameterTestProvider_test2() {
             return new Object[][] {
-                    {"нов"}, {"ирс"}
+                    {"нов"},
+                    {"ирс"}
                     };
         }
 
-        // q = 3 symbols & successful search
-        // 1. q = нов -> НОВосибирск
-        // 2. q = ирс -> новосибИРСк
+        // tests for successful search by q = 3
+        // ... q = нов -> НОВосибирск
+        // ... q = ирс -> новосибИРСк
         @Test(dataProvider = "Data-Provider-Function-test2")
         public void test2(String q) {
 
@@ -78,7 +78,9 @@ public class reqWithParamQ extends reqBase {
         }
 
 
-        // q = 3 symbols & unsuccessful search
+        // tests for UNsuccessful search by q = 3
+        // ... q = нов -> НОВосибирск
+        // ... q = ирс -> новосибИРСк
         @Test
         public void test3() {
 
@@ -97,7 +99,8 @@ public class reqWithParamQ extends reqBase {
 
         }
 
-         // q = UPcase registry
+
+         // Tests for q in UPcase registry
          @Test
          public void test4() {
              HttpResponse<String> jsonResponse = sendRequestGetResponseString
@@ -117,7 +120,8 @@ public class reqWithParamQ extends reqBase {
 
         }
 
-        // q = search by full name
+
+        // Test for searching by q by full name of regions
         @Test
         public void test5() {
 
@@ -140,23 +144,21 @@ public class reqWithParamQ extends reqBase {
 
 
 
-    //This function will provide the patameter data
+        //This function will provide the patameter data
         @DataProvider(name = "Data-Provider-Function-test6")
-         public Object[][] parameterTestProvider_test6() {
-            return new Object[][] {
+        public Object[][] parameterTestProvider_test6() {
 
+            return new Object[][] {
                     //  если бы второй параметр работал - то в ответе остался бы только один город
                     {"?q=горс&country_code=ru"},
-
                     // если бы второй параметр работал - то ответ пришёл бы пустым (без городов)
                     {"?q=горс&page=5"},
-
                     // если бы второй параметр работал - то в ответе пришло бы сообщение об ошибке
                     {"?q=горс&page_size=1"}
                 };
         }
 
-    // q - other params must be ignored
+       // Tests q - in this tests we use other params and they must be ignored
        @Test(dataProvider = "Data-Provider-Function-test6")
        public void test6(String q) {
 
@@ -164,14 +166,13 @@ public class reqWithParamQ extends reqBase {
                 (path, q);
 
             JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_with_country_code_param.json");
-
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
 
             boolean validation = validationSchema
                 ("q/param_q_scheme_for_search_with_country_code_param.json",
                         jsonObject);
 
-            assertTrue(validation, "Response for param q=\"нов\" must be equal schema,\n"
+            assertTrue(validation, "Response for: "+q+" ...must be equal Scheme,\n"
                 + "Response Expected: " + jsonExpected + "\n"
                 + "Responce Actual: " + jsonObject);
 

@@ -1,12 +1,7 @@
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
-import kong.unirest.Unirest;
-import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
-import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -121,7 +116,7 @@ public class reqDefault extends reqBase {
 
 
 
-        
+
 
         //This function will provide the patameter data
         @DataProvider(name = "Data-Provider-Function_test9")
