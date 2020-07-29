@@ -15,6 +15,40 @@ import static org.testng.Assert.assertTrue;
 public class reqWithParamPage extends reqBase {
 
 
+        //This function will provide the patameter data
+        @DataProvider(name = "Data-Provider-Function_test10_0")
+        public Object[][] parameterTestProvider_test10_0() {
+        return new Object[][] {
+                {"?page=-1"}
+        };
+        }
+
+        // for page = -1
+        // ...status code = 200
+        // ...structure of json = errorscheme
+        @Test(dataProvider = "Data-Provider-Function_test10_0")
+        public void test10_0(String q)  {
+
+        HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                (path,q);
+
+        if (!checkStatus(200,jsonResponse.getStatus())) {
+
+        } else {
+            JSONObject jsonExpected = getJSONfromJSONFile("page\\json_example_for_page_param_with_error_2.json");
+
+            JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+
+            boolean validation = validationSchema
+                    ("page\\param_page_code_error_schema_2.json",
+                            jsonObject);
+            assertTrue(validation,"Response must be equal ErrorSchema,\n"
+                    +"Response Expected: "+ jsonExpected+"\n"
+                    +"Responce Actual: "+ jsonObject);
+        }
+
+        }
+
 
         //This function will provide the patameter data
         @DataProvider(name = "Data-Provider-Function_test10")
@@ -140,7 +174,7 @@ public class reqWithParamPage extends reqBase {
 
                     listOfRegions.add(name);
                 }
-                listOfRegions.add(":"+q+" ");
+                listOfRegions.add(":page="+_page+" ");
 
             }
           }
