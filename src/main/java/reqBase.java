@@ -45,6 +45,7 @@ public class reqBase {
         }
 
 
+
         //
         public boolean validationSchema(String pathToSchema, org.json.JSONObject json) {
 
@@ -61,6 +62,8 @@ public class reqBase {
 
         }
 
+
+
         //
         public org.json.JSONObject sendRequestGetJSON(String url, String params) {
 
@@ -73,6 +76,8 @@ public class reqBase {
 
                 return json;
         }
+
+
 
         //
         public HttpResponse<JsonNode> sendRequestGetResponse (String url, String params) {
@@ -124,9 +129,6 @@ public class reqBase {
                 return true;
 
         }
-
-
-
 
 
 }

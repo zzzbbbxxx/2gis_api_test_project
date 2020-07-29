@@ -89,41 +89,6 @@ public class reqWithParamPage extends reqBase {
     }
 
 
-    //This function will provide the patameter data
-    @DataProvider(name = "Data-Provider-Function-test11")
-    public Object[][] parameterTestProvider_test11() {
-        return new Object[][]{
-                {"?page=1", ""}
-        };
-    }
-
-    // ответ для page=1 == ответу для запроса без page
-    @Test(dataProvider = "Data-Provider-Function-test11")
-    public void test11(String q1, String q2) {
-
-        HttpResponse<String> jsonResponse1 = sendRequestGetResponseString
-                (path, q1);
-
-        HttpResponse<String> jsonResponse2 = sendRequestGetResponseString
-                (path, q2);
-
-        JSONObject jsonExpected = getJSONfromJSONFile("/json_for_base_schema.json");
-
-        JSONObject jsonObject1 = new JSONObject(jsonResponse1.getBody());
-        JSONObject jsonObject2 = new JSONObject(jsonResponse2.getBody());
-
-        boolean validation = validationSchema
-                ("/base_schema.json",
-                        jsonObject1);
-
-        if (validation)
-            assertEquals(jsonObject1.toString(), jsonObject2.toString(),
-                    "Response for \"?page=1\" must be equal response without params,\n"
-                            + "Response \"?page=1\": " + jsonObject1 + "\n"
-                            + "Responce without param: " + jsonObject2);
-
-
-    }
 
 
     //"Перелистывание" страниц / у

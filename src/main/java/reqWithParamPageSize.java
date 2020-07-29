@@ -12,35 +12,7 @@ import static org.testng.Assert.assertTrue;
 
 public class reqWithParamPageSize extends reqBase {
 
-    //This function will provide the patameter data
-    @DataProvider(name = "Data-Provider-Function_test13")
-    public Object[][] parameterTestProvider_test13() {
-        return new Object[][]{
-                {""}
-        };
-    }
 
-    // page default = 15
-    // ...status code = 200
-    @Test(dataProvider = "Data-Provider-Function_test13")
-    public void test13(String q) {
-
-        HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                (path, q);
-
-        if (!checkStatus(200, jsonResponse.getStatus())) {
-
-        } else {
-
-            JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-
-            JSONArray tmpObj = jsonObject.getJSONArray("items");
-
-            Assert.assertEquals(tmpObj.length(),15,"Count regions in response by default must be equel 15");
-
-
-        }
-    }
 
         //This function will provide the patameter data
         @DataProvider(name = "Data-Provider-Function-test14")
