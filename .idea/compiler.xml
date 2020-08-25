@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11">
-      <module name="2gis_api_test_project" target="1.8" />
+      <module name="2gis_api_test_project" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

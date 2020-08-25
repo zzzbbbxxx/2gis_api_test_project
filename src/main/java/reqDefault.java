@@ -1,11 +1,13 @@
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
+import kong.unirest.Unirest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,18 +45,69 @@ public class reqDefault extends reqBase {
         }
 
 
-        // value for key total = 22
+
+        //  key total = 22
+        // it must be equal real count of regions by req
+
         @Test
-        public void test3() {
+        public void test3_upd() {
 
-                org.json.JSONObject jsonResponse = sendRequestGetJSON
-                        (path,"");
+                List<String> pages = Arrays.asList("?page=1", "?page=2", "?page=3");
+                List<String> listOfRegions = new ArrayList<String>();
+                int numPage = 0;
+                int count = 0;
+                int total = 0;
 
-                int total = jsonResponse.getInt("total");
 
-                assertEquals(22, total);
+                for (String q : pages) {
+
+                        numPage++;
+                        HttpResponse<String> jsonResponse = sendRequestGetResponseString(path, q);
+
+                        if (!checkStatus(200, jsonResponse.getStatus())) {
+
+                        } else {
+
+                                JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+                                JSONArray tmpObj = jsonObject.getJSONArray("items");
+                                total = jsonObject.getInt("total");
+
+                           //     List<String> _listOfRegions = new ArrayList<>();
+                                JSONObject mJsonObject = new JSONObject();
+                                count = count + tmpObj.length();
+
+                                for (int i = 0; i < tmpObj.length(); i++) {
+                                        mJsonObject = (JSONObject) tmpObj.get(i);
+                                        String name = mJsonObject.get("name").toString();
+                                        if (!arrayContains_(name, listOfRegions))
+                                        {
+
+                                        }
+                                        else listOfRegions.add(name);
+                                }
+
+                              //  listOfRegions.add(":page=" + numPage + " ");
+                        }
+
+                }
+
+                int count_ = listOfRegions.size();
+
+                Assert.assertEquals(count_,total, "Фактическое количество городов, отличается от того, что идёт в переменной Total");
 
         }
+
+
+        private boolean arrayContains_(String value, List<String> arr) {
+                for (String item : arr) {
+                        if (item.equals(value)) {
+                                return false;
+                        }
+                }
+                return true;
+        }
+
+
 
 
 
@@ -177,6 +230,21 @@ public class reqDefault extends reqBase {
         }
 
 
+    @Test
+    public void shouldReturnStatusOkay()  {
 
+        HttpResponse<JsonNode> jsonResponse
+                = Unirest.post("http://192.168.79.107/api/feedback/")
+                .header("Content-Type", "application/json")
+                .field("rating",5)
+                .field("serviceId", String.valueOf(38))
+                .field("text","5")
+                .field("userId", String.valueOf(121))
+                .asJson();
+
+        System.out.println(jsonResponse.getBody());
+
+
+    }
 
 }
