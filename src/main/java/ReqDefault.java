@@ -19,7 +19,7 @@ public class ReqDefault extends ReqBase {
 
 
         // status code = 200
-        @Test
+        @Test(description= "Launches the WordPress site")
         public void test1() {
 
                 HttpResponse<JsonNode> jsonResponse = sendRequestGetResponse
@@ -212,25 +212,5 @@ public class ReqDefault extends ReqBase {
                         }
                 }
         }
-
-
-
-
-    @Test
-    public void shouldReturnStatusOkay()  {
-
-        HttpResponse<JsonNode> jsonResponse
-                = Unirest.post("http://192.168.79.107/api/feedback/")
-                .header("Content-Type", "application/json")
-                .field("rating",5)
-                .field("serviceId", String.valueOf(38))
-                .field("text","5")
-                .field("userId", String.valueOf(121))
-                .asJson();
-
-        System.out.println(jsonResponse.getBody());
-
-
-    }
 
 }

@@ -27,28 +27,6 @@ public class ReqBase {
         public static String schemaExampleQError = "q/param_q_error_schema_for_0_1_2_symbols.json";
 
 
-
-
-        //
-        public boolean validationSchema(String pathToSchema, HttpResponse<JsonNode> json) {
-
-                org.json.JSONObject jsonSchema = new org.json.JSONObject(new JSONTokener(ReqWithParamQ.class.getResourceAsStream(pathToSchema)));
-                Schema schema = SchemaLoader.load(jsonSchema);
-
-                org.json.JSONObject jsonObject = new org.json.JSONObject(json.getBody().toString());
-
-                try {
-                        schema.validate(jsonObject);
-                        return true;
-                } catch (ValidationException e) {
-                        return false;
-                }
-
-        }
-
-
-
-        //
         public boolean validationSchema(String pathToSchema, org.json.JSONObject json) {
 
                 org.json.JSONObject jsonSchema = new org.json.JSONObject(new JSONTokener(ReqWithParamQ.class.getResourceAsStream(pathToSchema)));
@@ -65,8 +43,6 @@ public class ReqBase {
         }
 
 
-
-        //
         public org.json.JSONObject sendRequestGetJSON(String url, String params) {
 
                  HttpResponse<JsonNode> jsonResponse
@@ -74,14 +50,11 @@ public class ReqBase {
                         .header("accept", "application/json")
                         .asJson();
 
-             //   org.json.JSONObject json = new org.json.JSONObject(jsonResponse.getBody().toString());
-
                 return new org.json.JSONObject(jsonResponse.getBody().toString());
         }
 
 
 
-        //
         public HttpResponse<JsonNode> sendRequestGetResponse (String url, String params) {
 
                 HttpResponse<JsonNode> jsonResponse
@@ -93,7 +66,7 @@ public class ReqBase {
         }
 
 
-        //
+
         public HttpResponse<String> sendRequestGetResponseString (String url, String params) {
 
                 HttpResponse<String> jsonResponse
@@ -101,11 +74,16 @@ public class ReqBase {
                         .header("accept", "application/json")
                         .asString();
 
+                assertEquals(200, jsonResponse.getStatus(),
+                        "expected Status Code [200]" +
+                                " but found Status Code [" + String.valueOf(jsonResponse.getStatus())+"]");
+
+
                 return jsonResponse;
         }
 
 
-        //
+
         public JSONObject getJSONfromJSONFile (String path) {
 
                 JSONObject json =
@@ -116,7 +94,7 @@ public class ReqBase {
         }
 
 
-        //
+
         public boolean checkStatus (int statusE, int statusR) {
 
                 try {
@@ -132,15 +110,6 @@ public class ReqBase {
 
         }
 
-
-        private boolean arrayContains_(String value, List<String> arr) {
-                for (String item : arr) {
-                        if (item.equals(value)) {
-                                return false;
-                        }
-                }
-                return true;
-        }
 
         public boolean arrayContains(String value, List<String> arr ) {
                 for (String item : arr) {

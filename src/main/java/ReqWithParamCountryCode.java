@@ -1,9 +1,14 @@
 import kong.unirest.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -70,28 +75,24 @@ public class ReqWithParamCountryCode extends ReqBase {
             HttpResponse<String> jsonResponse = sendRequestGetResponseString
                 (path,q1+q2);
 
-            if (!checkStatus(200,jsonResponse.getStatus())) {
-                } else
-                    {
+            JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+            JSONArray tmpObj = jsonObject.getJSONArray("items");
+            JSONObject mJsonObject = new JSONObject();
 
-                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-                        JSONArray tmpObj = jsonObject.getJSONArray("items");
-                        JSONObject mJsonObject = new JSONObject();
+            String code;
+            HashSet<String> codeList = new HashSet<String>();
 
-                        for (int i = 0; i < tmpObj.length() ; i++) {
+            for (int i = 0; i < tmpObj.length() ; i++) {
 
-                            mJsonObject = (JSONObject)tmpObj.get(i);
-                            String code = mJsonObject.getJSONObject("country").get("code").toString();
+                mJsonObject = (JSONObject)tmpObj.get(i);
+                code = mJsonObject.getJSONObject("country").get("code").toString();
+                codeList.add(code);
 
-                            assertEquals(q2,code,"Code country for all regions in response \n" +
-                                    "must be equal code that we use in request,\n"
-                                    +"Expected code response: " + q2 + "\n"
-                                    +"Actual code in response: " + code + "\n"
-                                    +"Actual Response: "+ (JSONObject)tmpObj.get(i));
             }
+            HashSet<String> xset = new HashSet<String>();
+            xset.add(q2);
+            assertEquals(codeList,xset);
 
         }
-
-    }
 
 }
