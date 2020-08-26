@@ -1,21 +1,14 @@
 import kong.unirest.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 
-
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class reqWithParamCountryCode extends reqBase {
+public class ReqWithParamCountryCode extends ReqBase {
 
 
 

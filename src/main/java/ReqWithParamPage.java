@@ -12,7 +12,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class reqWithParamPage extends reqBase {
+public class ReqWithParamPage extends ReqBase {
 
 
         // Tests for page = -1
@@ -89,7 +89,7 @@ public class reqWithParamPage extends reqBase {
        public void test12() {
 
             List<String> pages = Arrays.asList("?page=1", "?page=2", "?page=3");
-            List<String> listOfRegions = new ArrayList<>();
+            List<String> listOfRegions = new ArrayList<String>();
             int numPage = 0;
 
             for (String q : pages) {
@@ -102,7 +102,7 @@ public class reqWithParamPage extends reqBase {
 
                     JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                     JSONArray tmpObj = jsonObject.getJSONArray("items");
-                    List<String> _listOfRegions = new ArrayList<>();
+                    List<String> _listOfRegions = new ArrayList<String>();
                     JSONObject mJsonObject = new JSONObject();
 
                     for (int i = 0; i < tmpObj.length(); i++) {

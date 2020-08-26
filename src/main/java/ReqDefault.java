@@ -14,7 +14,7 @@ import java.util.List;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class reqDefault extends reqBase {
+public class ReqDefault extends ReqBase {
 
 
 
@@ -79,7 +79,7 @@ public class reqDefault extends reqBase {
                                 for (int i = 0; i < tmpObj.length(); i++) {
                                         mJsonObject = (JSONObject) tmpObj.get(i);
                                         String name = mJsonObject.get("name").toString();
-                                        if (!arrayContains_(name, listOfRegions))
+                                        if (!arrayContains(name, listOfRegions))
                                         {
 
                                         }
@@ -98,14 +98,7 @@ public class reqDefault extends reqBase {
         }
 
 
-        private boolean arrayContains_(String value, List<String> arr) {
-                for (String item : arr) {
-                        if (item.equals(value)) {
-                                return false;
-                        }
-                }
-                return true;
-        }
+
 
 
 
@@ -220,14 +213,7 @@ public class reqDefault extends reqBase {
                 }
         }
 
-        public boolean arrayContains(String value, List<String> arr ) {
-                for (String item : arr) {
-                        if (item.equals(value)) {
-                                return true;
-                        }
-                }
-                return false;
-        }
+
 
 
     @Test

@@ -8,9 +8,11 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.testng.Assert;
 
+import java.util.List;
+
 import static org.testng.Assert.*;
 
-public class reqBase {
+public class ReqBase {
 
 
         public static String path = "https://regions-test.2gis.com/1.0/regions";
@@ -30,7 +32,7 @@ public class reqBase {
         //
         public boolean validationSchema(String pathToSchema, HttpResponse<JsonNode> json) {
 
-                org.json.JSONObject jsonSchema = new org.json.JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream(pathToSchema)));
+                org.json.JSONObject jsonSchema = new org.json.JSONObject(new JSONTokener(ReqWithParamQ.class.getResourceAsStream(pathToSchema)));
                 Schema schema = SchemaLoader.load(jsonSchema);
 
                 org.json.JSONObject jsonObject = new org.json.JSONObject(json.getBody().toString());
@@ -49,7 +51,7 @@ public class reqBase {
         //
         public boolean validationSchema(String pathToSchema, org.json.JSONObject json) {
 
-                org.json.JSONObject jsonSchema = new org.json.JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream(pathToSchema)));
+                org.json.JSONObject jsonSchema = new org.json.JSONObject(new JSONTokener(ReqWithParamQ.class.getResourceAsStream(pathToSchema)));
                 Schema schema = SchemaLoader.load(jsonSchema);
 
 
@@ -72,9 +74,9 @@ public class reqBase {
                         .header("accept", "application/json")
                         .asJson();
 
-                org.json.JSONObject json = new org.json.JSONObject(jsonResponse.getBody().toString());
+             //   org.json.JSONObject json = new org.json.JSONObject(jsonResponse.getBody().toString());
 
-                return json;
+                return new org.json.JSONObject(jsonResponse.getBody().toString());
         }
 
 
@@ -107,7 +109,7 @@ public class reqBase {
         public JSONObject getJSONfromJSONFile (String path) {
 
                 JSONObject json =
-                        new JSONObject(new JSONTokener(reqWithParamQ.class.getResourceAsStream
+                        new JSONObject(new JSONTokener(ReqWithParamQ.class.getResourceAsStream
                                 (path)));
 
                 return json;
@@ -128,6 +130,25 @@ public class reqBase {
 
                 return true;
 
+        }
+
+
+        private boolean arrayContains_(String value, List<String> arr) {
+                for (String item : arr) {
+                        if (item.equals(value)) {
+                                return false;
+                        }
+                }
+                return true;
+        }
+
+        public boolean arrayContains(String value, List<String> arr ) {
+                for (String item : arr) {
+                        if (item.equals(value)) {
+                                return true;
+                        }
+                }
+                return false;
         }
 
 
