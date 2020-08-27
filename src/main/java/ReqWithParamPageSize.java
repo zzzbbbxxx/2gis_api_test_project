@@ -30,11 +30,8 @@ public class ReqWithParamPageSize extends ReqBase {
         public void test14(String q)  {
 
                 HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                        (path,q);
+                        (PATH,q);
 
-                if (!checkStatus(200,jsonResponse.getStatus())) {
-
-                } else {
                         JSONObject jsonExpected = getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error.json");
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
@@ -45,7 +42,6 @@ public class ReqWithParamPageSize extends ReqBase {
                         assertTrue(validation,"Response must be equal ErrorSchema,\n"
                         +"Response Expected: "+ jsonExpected+"\n"
                         +"Responce Actual: "+ jsonObject);
-                }
 
         }
 
@@ -68,9 +64,8 @@ public class ReqWithParamPageSize extends ReqBase {
          public void test15(String q)  {
 
             HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                (path,q);
-            if (!checkStatus(200,jsonResponse.getStatus())) {
-                } else {
+                (PATH,q);
+
             JSONObject jsonExpected = getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error2.json");
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
@@ -81,7 +76,7 @@ public class ReqWithParamPageSize extends ReqBase {
             assertTrue(validation,"Response must be equal ErrorSchema,\n"
                     +"Response Expected: "+ jsonExpected+"\n"
                     +"Responce Actual: "+ jsonObject);
-            }
+
         }
 
 
@@ -97,23 +92,17 @@ public class ReqWithParamPageSize extends ReqBase {
         }
 
 
-        // Tests for page_size = 5, 10, 15
-        // ...status code = 200
-        // ...items in JSON must be equal page_size
-        @Test(dataProvider = "Data-Provider-Function-test16")
+        @Test(dataProvider = "Data-Provider-Function-test16",
+        description = "items in JSON must be equal page_size")
         public void test16(String q, int i)  {
 
             HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                (path,q);
-
-            if (!checkStatus(200, jsonResponse.getStatus())) {
-
-            } else {
+                (PATH,q);
 
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                 JSONArray tmpObj = jsonObject.getJSONArray("items");
                 Assert.assertEquals(tmpObj.length(),i,"Count regions in response by default must be equel: "+i);
-            }
+
         }
 
 

@@ -1,6 +1,5 @@
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
-import kong.unirest.Unirest;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -9,6 +8,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.testng.Assert.assertEquals;
@@ -23,8 +23,7 @@ public class ReqDefault extends ReqBase {
         public void test1() {
 
                 HttpResponse<JsonNode> jsonResponse = sendRequestGetResponse
-                        (path,"");
-
+                        (PATH,"");
 
                 assertEquals(200, jsonResponse.getStatus());
 
@@ -36,10 +35,9 @@ public class ReqDefault extends ReqBase {
         public void test2() {
 
                 org.json.JSONObject jsonResponse = sendRequestGetJSON
-                        (path,"");
+                        (PATH,"");
 
-
-                boolean validation = validationSchema(baseSchema,jsonResponse);
+                boolean validation = validationSchema(BASE_SCHEMA,jsonResponse);
 
                 assertTrue(validation);
         }
@@ -62,23 +60,19 @@ public class ReqDefault extends ReqBase {
                 for (String q : pages) {
 
                         numPage++;
-                        HttpResponse<String> jsonResponse = sendRequestGetResponseString(path, q);
+                        HttpResponse<String> jsonResponse = sendRequestGetResponseString(PATH, q);
 
-                        if (!checkStatus(200, jsonResponse.getStatus())) {
+                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+                        JSONArray tmpObj = jsonObject.getJSONArray("items");
+                        total = jsonObject.getInt("total");
 
-                        } else {
+                        JSONObject mJsonObject = new JSONObject();
+                        count = count + tmpObj.length();
 
-                                JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-                                JSONArray tmpObj = jsonObject.getJSONArray("items");
-                                total = jsonObject.getInt("total");
+                        for (int i = 0; i < tmpObj.length(); i++) {
 
-                           //     List<String> _listOfRegions = new ArrayList<>();
-                                JSONObject mJsonObject = new JSONObject();
-                                count = count + tmpObj.length();
-
-                                for (int i = 0; i < tmpObj.length(); i++) {
-                                        mJsonObject = (JSONObject) tmpObj.get(i);
-                                        String name = mJsonObject.get("name").toString();
+                                mJsonObject = (JSONObject) tmpObj.get(i);
+                                String name = mJsonObject.get("name").toString();
                                         if (!arrayContains(name, listOfRegions))
                                         {
 
@@ -87,8 +81,7 @@ public class ReqDefault extends ReqBase {
                                 }
 
                               //  listOfRegions.add(":page=" + numPage + " ");
-                        }
-
+                        //
                 }
 
                 int count_ = listOfRegions.size();
@@ -108,20 +101,16 @@ public class ReqDefault extends ReqBase {
         @Test
         public void test13() {
 
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString(path,"");
+                HttpResponse<String> jsonResponse = sendRequestGetResponseString(PATH,"");
 
-                if (!checkStatus(200, jsonResponse.getStatus())) {
+                JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                } else {
-
-                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-
-                        Assert.assertEquals(jsonObject.getJSONArray("items").length(),
+                Assert.assertEquals(jsonObject.getJSONArray("items").length(),
                                 15,
                                 "Count of regions in response by default must be equal: 15 \n");
 
 
-                }
+
         }
 
 
@@ -139,10 +128,10 @@ public class ReqDefault extends ReqBase {
         public void test11(String q1, String q2) {
 
                 HttpResponse<String> jsonResponse1 = sendRequestGetResponseString
-                        (path, q1);
+                        (PATH, q1);
 
                 HttpResponse<String> jsonResponse2 = sendRequestGetResponseString
-                        (path, q2);
+                        (PATH, q2);
 
                 JSONObject jsonObject1 = new JSONObject(jsonResponse1.getBody());
                 JSONObject jsonObject2 = new JSONObject(jsonResponse2.getBody());
@@ -190,27 +179,32 @@ public class ReqDefault extends ReqBase {
         public void test9(String q1, String q2) {
 
                 HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                        (path,q1+q2);
-
-                if (!checkStatus(200,jsonResponse.getStatus())) {
-
-                } else {
+                        (PATH,q1+q2);
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                         JSONArray tmpObj = jsonObject.getJSONArray("items");
                         JSONObject mJsonObject = new JSONObject();
 
+                String code;
+                HashSet<String> codeList = new HashSet<String>();
+
                         for (int i = 0; i < tmpObj.length() ; i++) {
 
                                 mJsonObject = (JSONObject)tmpObj.get(i);
-                                String code = mJsonObject.getJSONObject("country").get("code").toString();
-                                List<String> list = Arrays.asList("ru", "kg", "kz", "cz");
-                                Assert.assertTrue(arrayContains(code, list),
-                                        "Code for countries by default de must be in {ru,kg, kz,cz} \n"
-                                                +"Expected code response: " + code + "\n"
-                                                +"Actual Response: "+ (JSONObject)tmpObj.get(i));
+                                code = mJsonObject.getJSONObject("country").get("code").toString();
+                                codeList.add(code);
                         }
-                }
+
+
+
+
+                Assert.assertTrue(arrayContains__(codeList),
+                        "Code for countries by default de must be in {ru,kg, kz,cz} /n "
+                +codeList);
+
+
+
+
         }
 
 }

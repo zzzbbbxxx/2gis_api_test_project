@@ -1,14 +1,11 @@
 import kong.unirest.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -31,25 +28,20 @@ public class ReqWithParamCountryCode extends ReqBase {
         // and ...not in set [ru, kg, kz, cz]
         @Test(dataProvider = "Data-Provider-Function_test7")
         public void test7(String q)  {
+            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                        (PATH,q);
 
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                        (path,q);
+            JSONObject jsonExpected = getJSONfromJSONFile("countrycode/json_example_for_country_code_param_with_error.json");
 
-                if (!checkStatus(200,jsonResponse.getStatus())) {
+            JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                } else {
-                        JSONObject jsonExpected = getJSONfromJSONFile("countrycode/json_example_for_country_code_param_with_error.json");
-
-                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-
-                        boolean validation = validationSchema
-                                ("countrycode/param_country_code_error_schema.json",
+            boolean validation = validationSchema("countrycode/param_country_code_error_schema.json",
                                         jsonObject);
 
-                        assertTrue(validation,"Response must be equal ErrorSchema,\n"
+            assertTrue(validation,"Response must be equal ErrorSchema,\n"
                         +"Response Expected: "+ jsonExpected+"\n"
                         +"Responce Actual: "+ jsonObject);
-                }
+
 
         }
 
@@ -67,13 +59,12 @@ public class ReqWithParamCountryCode extends ReqBase {
                 };
             }
 
-
-        // Tests for country_code =  [ru, kg, kz, cz]... and "ua" too
-        @Test(dataProvider = "Data-Provider-Function_test8")
+        @Test(dataProvider = "Data-Provider-Function_test8",
+        description = "code for regions in response must be equal code in param")
         public void test8(String q1, String q2) {
 
             HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                (path,q1+q2);
+                (PATH,q1+q2);
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
             JSONArray tmpObj = jsonObject.getJSONArray("items");

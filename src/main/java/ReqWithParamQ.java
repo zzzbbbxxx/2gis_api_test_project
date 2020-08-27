@@ -9,7 +9,6 @@ public class ReqWithParamQ extends ReqBase {
 
 
 
-        //This function will provide the patameter data
         @DataProvider(name = "Data-Provider-Function_test1")
         public Object[][] parameterTestProvider_test1() {
             return new Object[][] {
@@ -20,25 +19,23 @@ public class ReqWithParamQ extends ReqBase {
                     };
         }
 
-        // tests for q = 0/empty, 1, 2 symbols...
-        // ...status code = 200
-        // ...structure of json = errorscheme
-        @Test(dataProvider = "Data-Provider-Function_test1")
+        @Test(description = "search with error response for q = 0,1,2 symbols",
+              dataProvider = "Data-Provider-Function_test1")
+
         public void test1(String q)  {
 
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString(path,q);
+                HttpResponse<String> jsonResponse = sendRequestGetResponseString(PATH,q);
 
-                if (!checkStatus(200,jsonResponse.getStatus())) {
-                } else {
-                        JSONObject jsonExpected = getJSONfromJSONFile(jsonExampleQError);
-                        org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
-                        boolean validation = validationSchema
-                                (schemaExampleQError,
-                                        jsonObject);
-                        assertTrue(validation,"Response must match the ErrorSchema,\n"
+                JSONObject jsonExpected = getJSONfromJSONFile(EXAMPLE_FOR_Q_PARAM_WITH_ERROR_JSON);
+
+                org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
+
+                boolean validation = validationSchema
+                        (ERROR_SCHEMA_FOR_0_1_2_SYMBOLS_JSON, jsonObject);
+
+                assertTrue(validation,"Response must match the ErrorSchema,\n"
                         +"Response Expected: "+ jsonExpected+"\n"
                         +"Responce Actual: "+ jsonObject);
-                }
 
         }
 
@@ -53,18 +50,17 @@ public class ReqWithParamQ extends ReqBase {
                     };
         }
 
-        // tests for successful search by q = 3
-        // ... q = нов -> НОВосибирск
-        // ... q = ирс -> новосибИРСк
-        @Test(dataProvider = "Data-Provider-Function-test2")
+        @Test(description = "Successful search by symbols",
+              dataProvider = "Data-Provider-Function-test2")
+
         public void test2(String q) {
 
                 HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                        (path, "?q="+q);
+                        (PATH, "?q="+q);
 
-                JSONObject jsonExpected = getJSONfromJSONFile(jsonExampleQSuccessSearch);
+                JSONObject jsonExpected = getJSONfromJSONFile(SUCCESS_SEARCH_FOR_3_SYMBOLS_JSON);
 
-                org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+                org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
 
                 boolean validation = validationSchema
                         ("/q/param_q_scheme_for_success_search_for_3_symbols.json",
@@ -74,18 +70,17 @@ public class ReqWithParamQ extends ReqBase {
                         + "Response Expected: " + jsonExpected + "\n"
                         + "Responce Actual: " + jsonObject);
 
-
         }
 
 
         // tests for UNsuccessful search by q = 3
         // ... q = нов -> НОВосибирск
         // ... q = ирс -> новосибИРСк
-        @Test
+        @Test(description = "unsuccessful search by 3 symbols")
         public void test3() {
 
                 HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                        (path, "?q="+"нос");
+                        (PATH, "?q="+"нос");
 
             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
 
@@ -100,11 +95,10 @@ public class ReqWithParamQ extends ReqBase {
         }
 
 
-         // Tests for q in UPcase registry
-         @Test
+         @Test(description = "successful search in UPcase")
          public void test4() {
              HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                (path, "?q="+"НОВ");
+                (PATH, "?q="+"НОВ");
 
              JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
 
@@ -120,13 +114,11 @@ public class ReqWithParamQ extends ReqBase {
 
         }
 
-
-        // Test for searching by q by full name of regions
-        @Test
+        @Test(description = "searching by full name of regions")
         public void test5() {
 
             HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                (path, "?q="+"Новосибирск");
+                (PATH, "?q="+"Новосибирск");
 
             JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
 
@@ -158,12 +150,14 @@ public class ReqWithParamQ extends ReqBase {
                 };
         }
 
-       // Tests q - in this tests we use other params and they must be ignored
-       @Test(dataProvider = "Data-Provider-Function-test6")
+
+       @Test(description = "use q param - other params must be ignored",
+               dataProvider = "Data-Provider-Function-test6")
+
        public void test6(String q) {
 
             HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                (path, q);
+                (PATH, q);
 
             JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_with_country_code_param.json");
             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());

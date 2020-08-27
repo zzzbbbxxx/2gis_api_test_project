@@ -15,17 +15,12 @@ import static org.testng.Assert.assertTrue;
 public class ReqWithParamPage extends ReqBase {
 
 
-        // Tests for page = -1
-        // ...status code = 200
-        // ...structure of json = errorscheme
-        @Test
+        @Test(description = "page must be > 0")
         public void test10_0() {
 
             HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                (path,"?page=-1");
+                (PATH,"?page=-1");
 
-            if (!checkStatus(200, jsonResponse.getStatus())) {
-            } else {
                 JSONObject jsonExpected = getJSONfromJSONFile("page\\json_example_for_page_param_with_error_2.json");
 
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
@@ -37,7 +32,7 @@ public class ReqWithParamPage extends ReqBase {
                 assertTrue(validation, "Response must be equal ErrorSchema,\n"
                     + "Response Expected: " + jsonExpected + "\n"
                     + "Responce Actual: " + jsonObject);
-            }
+
         }
 
 
@@ -59,14 +54,11 @@ public class ReqWithParamPage extends ReqBase {
         // Tests for page = empty, 0, 1.5, one
         // ...status code = 200
         // ...structure of json = errorscheme
-        @Test(dataProvider = "Data-Provider-Function_test10")
+        @Test(dataProvider = "Data-Provider-Function_test10",
+        description = "")
         public void test10(String q) {
             HttpResponse<String> jsonResponse = sendRequestGetResponseString
-                (path, q);
-
-            if (!checkStatus(200, jsonResponse.getStatus())) {
-
-            } else {
+                (PATH, q);
 
                 JSONObject jsonExpected = getJSONfromJSONFile("page\\json_example_for_page_param_with_error.json");
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
@@ -78,7 +70,7 @@ public class ReqWithParamPage extends ReqBase {
                 assertTrue(validation, "Response must be equal ErrorSchema,\n"
                     + "Response Expected: " + jsonExpected + "\n"
                     + "Responce Actual: " + jsonObject);
-            }
+
         }
 
 
@@ -95,10 +87,7 @@ public class ReqWithParamPage extends ReqBase {
             for (String q : pages) {
 
                 numPage++;
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString(path, q);
-                if (!checkStatus(200, jsonResponse.getStatus())) {
-
-                } else {
+                HttpResponse<String> jsonResponse = sendRequestGetResponseString(PATH, q);
 
                     JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                     JSONArray tmpObj = jsonObject.getJSONArray("items");
@@ -110,7 +99,7 @@ public class ReqWithParamPage extends ReqBase {
                         String name = mJsonObject.get("name").toString();
                         _listOfRegions.add(name);
 
-                        Assert.assertTrue(arrayContains(name, listOfRegions),
+                        Assert.assertTrue(arrayContains_(name, listOfRegions),
                             "List of regions: " + listOfRegions + "\n"
                                     + "Current region: " + name + " - already was in response\n"
                                     + "Current page: " + q + "\n");
@@ -120,19 +109,11 @@ public class ReqWithParamPage extends ReqBase {
                     }
 
                     listOfRegions.add(":page=" + numPage + " ");
-                }
+
             }
        }
 
 
-       public boolean arrayContains(String value, List<String> arr) {
-           for (String item : arr) {
-               if (item.equals(value)) {
-                   return false;
-               }
-           }
-           return true;
-       }
 
 
 
