@@ -24,13 +24,13 @@ public class ReqWithParamQ extends ReqBase {
 
         public void test1(String q)  {
 
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString(PATH,q);
+                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString(PATH,q);
 
-                JSONObject jsonExpected = getJSONfromJSONFile(EXAMPLE_FOR_Q_PARAM_WITH_ERROR_JSON);
+                JSONObject jsonExpected = helperReq.getJSONfromJSONFile(EXAMPLE_FOR_Q_PARAM_WITH_ERROR_JSON);
 
                 org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
 
-                boolean validation = validationSchema
+                boolean validation = helperReq.validationSchema
                         (ERROR_SCHEMA_FOR_0_1_2_SYMBOLS_JSON, jsonObject);
 
                 assertTrue(validation,"Response must match the ErrorSchema,\n"
@@ -55,14 +55,14 @@ public class ReqWithParamQ extends ReqBase {
 
         public void test2(String q) {
 
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                         (PATH, "?q="+q);
 
-                JSONObject jsonExpected = getJSONfromJSONFile(SUCCESS_SEARCH_FOR_3_SYMBOLS_JSON);
+                JSONObject jsonExpected = helperReq.getJSONfromJSONFile(SUCCESS_SEARCH_FOR_3_SYMBOLS_JSON);
 
                 org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
 
-                boolean validation = validationSchema
+                boolean validation = helperReq.validationSchema
                         ("/q/param_q_scheme_for_success_search_for_3_symbols.json",
                                 jsonObject);
 
@@ -79,12 +79,12 @@ public class ReqWithParamQ extends ReqBase {
         @Test(description = "unsuccessful search by 3 symbols")
         public void test3() {
 
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                         (PATH, "?q="+"нос");
 
             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
 
-            boolean validation = validationSchema
+            boolean validation = helperReq.validationSchema
                         ("q\\param_q_scheme_for_unsuccess_search_for_3_symbols.json",
                                 jsonObject);
 
@@ -97,14 +97,14 @@ public class ReqWithParamQ extends ReqBase {
 
          @Test(description = "successful search in UPcase")
          public void test4() {
-             HttpResponse<String> jsonResponse = sendRequestGetResponseString
+             HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                 (PATH, "?q="+"НОВ");
 
-             JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
+             JSONObject jsonExpected = helperReq.getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
 
              org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
 
-             boolean validation = validationSchema
+             boolean validation = helperReq.validationSchema
                 ("q/param_q_scheme_for_success_search_for_3_symbols.json",
                         jsonObject);
 
@@ -117,14 +117,14 @@ public class ReqWithParamQ extends ReqBase {
         @Test(description = "searching by full name of regions")
         public void test5() {
 
-            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                 (PATH, "?q="+"Новосибирск");
 
-            JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
+            JSONObject jsonExpected = helperReq.getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
 
             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
 
-            boolean validation = validationSchema
+            boolean validation = helperReq.validationSchema
                 ("q/param_q_scheme_for_success_search_for_3_symbols.json",
                         jsonObject);
 
@@ -156,13 +156,13 @@ public class ReqWithParamQ extends ReqBase {
 
        public void test6(String q) {
 
-            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                 (PATH, q);
 
-            JSONObject jsonExpected = getJSONfromJSONFile("/q/json_example_for_q_param_with_country_code_param.json");
+            JSONObject jsonExpected = helperReq.getJSONfromJSONFile("/q/json_example_for_q_param_with_country_code_param.json");
             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
 
-            boolean validation = validationSchema
+            boolean validation = helperReq.validationSchema
                 ("q/param_q_scheme_for_search_with_country_code_param.json",
                         jsonObject);
 

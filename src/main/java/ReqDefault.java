@@ -22,7 +22,7 @@ public class ReqDefault extends ReqBase {
         @Test(description= "Launches the WordPress site")
         public void test1() {
 
-                HttpResponse<JsonNode> jsonResponse = sendRequestGetResponse
+                HttpResponse<JsonNode> jsonResponse = helperReq.sendRequestGetResponse
                         (PATH,"");
 
                 assertEquals(200, jsonResponse.getStatus());
@@ -34,10 +34,10 @@ public class ReqDefault extends ReqBase {
         @Test
         public void test2() {
 
-                org.json.JSONObject jsonResponse = sendRequestGetJSON
+                org.json.JSONObject jsonResponse = helperReq.sendRequestGetJSON
                         (PATH,"");
 
-                boolean validation = validationSchema(BASE_SCHEMA,jsonResponse);
+                boolean validation = helperReq.validationSchema(BASE_SCHEMA,jsonResponse);
 
                 assertTrue(validation);
         }
@@ -60,7 +60,7 @@ public class ReqDefault extends ReqBase {
                 for (String q : pages) {
 
                         numPage++;
-                        HttpResponse<String> jsonResponse = sendRequestGetResponseString(PATH, q);
+                        HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString(PATH, q);
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                         JSONArray tmpObj = jsonObject.getJSONArray("items");
@@ -73,7 +73,7 @@ public class ReqDefault extends ReqBase {
 
                                 mJsonObject = (JSONObject) tmpObj.get(i);
                                 String name = mJsonObject.get("name").toString();
-                                        if (arrayContains(name, listOfRegions))
+                                        if (helperReq.arrayContains(name, listOfRegions))
                                         {
 
                                         }
@@ -101,7 +101,7 @@ public class ReqDefault extends ReqBase {
         @Test
         public void test13() {
 
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString(PATH,"");
+                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString(PATH,"");
 
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
@@ -127,17 +127,17 @@ public class ReqDefault extends ReqBase {
         @Test(dataProvider = "Data-Provider-Function-test11")
         public void test11(String q1, String q2) {
 
-                HttpResponse<String> jsonResponse1 = sendRequestGetResponseString
+                HttpResponse<String> jsonResponse1 = helperReq.sendRequestGetResponseString
                         (PATH, q1);
 
-                HttpResponse<String> jsonResponse2 = sendRequestGetResponseString
+                HttpResponse<String> jsonResponse2 = helperReq.sendRequestGetResponseString
                         (PATH, q2);
 
                 JSONObject jsonObject1 = new JSONObject(jsonResponse1.getBody());
                 JSONObject jsonObject2 = new JSONObject(jsonResponse2.getBody());
 
-                boolean validation = validationSchema
-                        ("/base_schema.json",
+                boolean validation = helperReq.validationSchema
+                        (BASE_SCHEMA,
                                 jsonObject1);
 
                 if (validation)
@@ -178,7 +178,7 @@ public class ReqDefault extends ReqBase {
         @Test(dataProvider = "Data-Provider-Function_test9")
         public void test9(String q1, String q2) {
 
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                         (PATH,q1+q2);
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
@@ -198,7 +198,7 @@ public class ReqDefault extends ReqBase {
 
 
 
-                Assert.assertTrue(arrayContains__(codeList),
+                Assert.assertTrue(helperReq.arrayContains__(codeList),
                         "Code for countries by default de must be in {ru,kg, kz,cz} /n "
                 +codeList);
 

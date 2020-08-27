@@ -18,14 +18,14 @@ public class ReqWithParamPage extends ReqBase {
         @Test(description = "page must be > 0")
         public void test10_0() {
 
-            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                 (PATH,"?page=-1");
 
-                JSONObject jsonExpected = getJSONfromJSONFile("page\\json_example_for_page_param_with_error_2.json");
+                JSONObject jsonExpected = helperReq.getJSONfromJSONFile("page\\json_example_for_page_param_with_error_2.json");
 
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                boolean validation = validationSchema
+                boolean validation = helperReq.validationSchema
                     ("page\\param_page_code_error_schema_2.json",
                             jsonObject);
 
@@ -57,13 +57,13 @@ public class ReqWithParamPage extends ReqBase {
         @Test(dataProvider = "Data-Provider-Function_test10",
         description = "")
         public void test10(String q) {
-            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                 (PATH, q);
 
-                JSONObject jsonExpected = getJSONfromJSONFile("page\\json_example_for_page_param_with_error.json");
+                JSONObject jsonExpected = helperReq.getJSONfromJSONFile("page\\json_example_for_page_param_with_error.json");
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                boolean validation = validationSchema
+                boolean validation = helperReq.validationSchema
                     ("page\\param_page_code_error_schema.json",
                             jsonObject);
 
@@ -87,7 +87,7 @@ public class ReqWithParamPage extends ReqBase {
             for (String q : pages) {
 
                 numPage++;
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString(PATH, q);
+                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString(PATH, q);
 
                     JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                     JSONArray tmpObj = jsonObject.getJSONArray("items");
@@ -99,7 +99,7 @@ public class ReqWithParamPage extends ReqBase {
                         String name = mJsonObject.get("name").toString();
                         _listOfRegions.add(name);
 
-                        Assert.assertTrue(!arrayContains(name, listOfRegions),
+                        Assert.assertTrue(!helperReq.arrayContains(name, listOfRegions),
                             "List of regions: " + listOfRegions + "\n"
                                     + "Current region: " + name + " - already was in response\n"
                                     + "Current page: " + q + "\n");

@@ -29,14 +29,14 @@ public class ReqWithParamPageSize extends ReqBase {
         @Test(dataProvider = "Data-Provider-Function-test14")
         public void test14(String q)  {
 
-                HttpResponse<String> jsonResponse = sendRequestGetResponseString
+                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                         (PATH,q);
 
-                        JSONObject jsonExpected = getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error.json");
+                        JSONObject jsonExpected = helperReq.getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error.json");
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                        boolean validation = validationSchema
+                        boolean validation = helperReq.validationSchema
                                 ("page_size\\param_page_size_code_error_schema.json",
                                         jsonObject);
                         assertTrue(validation,"Response must be equal ErrorSchema,\n"
@@ -63,14 +63,14 @@ public class ReqWithParamPageSize extends ReqBase {
          @Test(dataProvider = "Data-Provider-Function-test15")
          public void test15(String q)  {
 
-            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                 (PATH,q);
 
-            JSONObject jsonExpected = getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error2.json");
+            JSONObject jsonExpected = helperReq.getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error2.json");
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-            boolean validation = validationSchema
+            boolean validation = helperReq.validationSchema
                     ("page_size\\param_page_size_code_error_schema2.json",
                             jsonObject);
             assertTrue(validation,"Response must be equal ErrorSchema,\n"
@@ -96,7 +96,7 @@ public class ReqWithParamPageSize extends ReqBase {
         description = "items in JSON must be equal page_size")
         public void test16(String q, int i)  {
 
-            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                 (PATH,q);
 
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());

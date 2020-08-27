@@ -28,14 +28,14 @@ public class ReqWithParamCountryCode extends ReqBase {
         // and ...not in set [ru, kg, kz, cz]
         @Test(dataProvider = "Data-Provider-Function_test7")
         public void test7(String q)  {
-            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                         (PATH,q);
 
-            JSONObject jsonExpected = getJSONfromJSONFile("countrycode/json_example_for_country_code_param_with_error.json");
+            JSONObject jsonExpected = helperReq.getJSONfromJSONFile("countrycode/json_example_for_country_code_param_with_error.json");
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-            boolean validation = validationSchema("countrycode/param_country_code_error_schema.json",
+            boolean validation = helperReq.validationSchema("countrycode/param_country_code_error_schema.json",
                                         jsonObject);
 
             assertTrue(validation,"Response must be equal ErrorSchema,\n"
@@ -63,7 +63,7 @@ public class ReqWithParamCountryCode extends ReqBase {
         description = "code for regions in response must be equal code in param")
         public void test8(String q1, String q2) {
 
-            HttpResponse<String> jsonResponse = sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                 (PATH,q1+q2);
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
