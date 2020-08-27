@@ -73,7 +73,7 @@ public class ReqDefault extends ReqBase {
 
                                 mJsonObject = (JSONObject) tmpObj.get(i);
                                 String name = mJsonObject.get("name").toString();
-                                        if (!arrayContains(name, listOfRegions))
+                                        if (arrayContains(name, listOfRegions))
                                         {
 
                                         }

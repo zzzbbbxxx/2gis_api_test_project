@@ -96,22 +96,6 @@ public class ReqBase {
 
 
 
-        public boolean checkStatus (int statusE, int statusR) {
-
-                try {
-                        assertEquals(statusE, statusR);
-
-                } catch ( AssertionError  e ) {
-                        Assert.fail("expected Status Code [200]" +
-                                    " but found Status Code [" + String.valueOf(statusR)+"]");
-                        return false;
-                }
-
-                return true;
-
-        }
-
-
         public boolean arrayContains__(HashSet<String> xset ) {
 
                 for (String item : xset) {
@@ -134,16 +118,6 @@ public class ReqBase {
                 }
                 return false;
         }
-
-        public boolean arrayContains_(String value, List<String> arr) {
-                for (String item : arr) {
-                        if (item.equals(value)) {
-                                return false;
-                        }
-                }
-                return true;
-        }
-
 
 
 }

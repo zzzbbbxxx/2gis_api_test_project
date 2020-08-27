@@ -99,7 +99,7 @@ public class ReqWithParamPage extends ReqBase {
                         String name = mJsonObject.get("name").toString();
                         _listOfRegions.add(name);
 
-                        Assert.assertTrue(arrayContains_(name, listOfRegions),
+                        Assert.assertTrue(!arrayContains(name, listOfRegions),
                             "List of regions: " + listOfRegions + "\n"
                                     + "Current region: " + name + " - already was in response\n"
                                     + "Current page: " + q + "\n");
