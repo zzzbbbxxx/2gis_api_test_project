@@ -15,11 +15,10 @@ public class ReqDefault extends ReqBase {
 
 
 
-        // status code = 200
-        @Test(description= "Launches the WordPress site")
+        @Test(description= "status code = 200")
         public void test1() {
 
-                HttpResponse<JsonNode> jsonResponse = helperReq.sendRequestGetResponse
+                HttpResponse<JsonNode> jsonResponse = HelperReq.sendRequestGetResponse
                         (PATH,"");
 
                 assertEquals(200, jsonResponse.getStatus());
@@ -27,22 +26,18 @@ public class ReqDefault extends ReqBase {
         }
 
 
-        // structure of json are correct ( contains all keys,params )
-        @Test
+        @Test(description= "structure of json are correct & contains all keys,params ")
         public void test2() {
 
-                JSONObject jsonResponse = helperReq.sendRequestGetJSON
+                JSONObject jsonResponse = HelperReq.sendRequestGetJSON
                         (PATH,"");
 
-                helperReq.validateSchema(BASE_SCHEMA,jsonResponse);
+                HelperReq.validateSchema(BASE_SCHEMA,jsonResponse);
         }
 
 
 
-        //  key total = 22
-        // it must be equal real count of regions by req
-
-        @Test
+        @Test(description= "value of total must be equal real count of regions")
         public void test3_upd() {
 
                 List<String> pages = Arrays.asList("?page=1", "?page=2", "?page=3");
@@ -51,14 +46,14 @@ public class ReqDefault extends ReqBase {
                 int count = 0;
                 int total = 0;
 
-
                 for (String q : pages) {
 
                         numPage++;
-                        HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString(PATH, q);
+                        HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH, q);
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                         JSONArray tmpObj = jsonObject.getJSONArray("items");
+
                         total = jsonObject.getInt("total");
 
                         JSONObject mJsonObject = new JSONObject();
@@ -68,15 +63,8 @@ public class ReqDefault extends ReqBase {
 
                                 mJsonObject = (JSONObject) tmpObj.get(i);
                                 String name = mJsonObject.get("name").toString();
-                                        if (helperReq.arrayContains(name, listOfRegions))
-                                        {
-
-                                        }
-                                        else listOfRegions.add(name);
+                                        if (!HelperReq.arrayContains(name, listOfRegions)) listOfRegions.add(name);
                                 }
-
-                              //  listOfRegions.add(":page=" + numPage + " ");
-                        //
                 }
 
                 int count_ = listOfRegions.size();
@@ -86,17 +74,10 @@ public class ReqDefault extends ReqBase {
         }
 
 
-
-
-
-
-
-
-        // page_size default must be contains 15 regions
-        @Test
+        @Test(description= "page_size default must be contains 15 regions")
         public void test13() {
 
-                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString(PATH,"");
+                HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH,"");
 
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
@@ -118,20 +99,21 @@ public class ReqDefault extends ReqBase {
                 };
         }
 
-        // page by default must be equel page=1
-        @Test(dataProvider = "Data-Provider-Function-test11")
+
+        @Test(dataProvider = "Data-Provider-Function-test11",
+        description = "page by default must be equel page=1" )
         public void test11(String q1, String q2) {
 
-                HttpResponse<String> jsonResponse1 = helperReq.sendRequestGetResponseString
+                HttpResponse<String> jsonResponse1 = HelperReq.sendRequestGetResponseString
                         (PATH, q1);
 
-                HttpResponse<String> jsonResponse2 = helperReq.sendRequestGetResponseString
+                HttpResponse<String> jsonResponse2 = HelperReq.sendRequestGetResponseString
                         (PATH, q2);
 
                 JSONObject jsonObject1 = new JSONObject(jsonResponse1.getBody());
                 JSONObject jsonObject2 = new JSONObject(jsonResponse2.getBody());
 
-                helperReq.validateSchema(BASE_SCHEMA,jsonObject1);
+                HelperReq.validateSchema(BASE_SCHEMA,jsonObject1);
 
                 assertEquals(jsonObject1.toString(), jsonObject2.toString(),
                                 "Page by default must be equel for response for \"page=1\"\n"
@@ -166,10 +148,11 @@ public class ReqDefault extends ReqBase {
         // в первом случае будет ошибка, потому что я ищу только страны из списка и "падаю",
         // ...если появляется то, чего я не жду
 
-        @Test(dataProvider = "Data-Provider-Function_test9")
+        @Test(dataProvider = "Data-Provider-Function_test9",
+        description = "...")
         public void test9(String q1, String q2) {
 
-                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
+                HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
                         (PATH,q1+q2);
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
@@ -186,10 +169,7 @@ public class ReqDefault extends ReqBase {
                                 codeList.add(code);
                         }
 
-
-
-
-                Assert.assertTrue(helperReq.arrayContains__(codeList),
+                Assert.assertTrue(HelperReq.arrayContains__(codeList),
                         "Code for countries by default de must be in {ru,kg, kz,cz} /n "
                 +codeList);
 

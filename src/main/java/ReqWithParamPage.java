@@ -18,14 +18,14 @@ public class ReqWithParamPage extends ReqBase {
         @Test(description = "page must be > 0")
         public void test10_0() {
 
-            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
                 (PATH,"?page=-1");
 
-                JSONObject jsonExpected = helperReq.getJSONfromJSONFile("page\\json_example_for_page_param_with_error_2.json");
+                JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("page\\json_example_for_page_param_with_error_2.json");
 
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                helperReq.validateSchema("page\\param_page_code_error_schema_2.json",
+                HelperReq.validateSchema("page\\param_page_code_error_schema_2.json",
                             jsonObject);
 
         }
@@ -46,29 +46,25 @@ public class ReqWithParamPage extends ReqBase {
                 };
         }
 
-        // Tests for page = empty, 0, 1.5, one
-        // ...status code = 200
-        // ...structure of json = errorscheme
+
         @Test(dataProvider = "Data-Provider-Function_test10",
-        description = "")
+        description = "page = empty, 0, 1.5, one")
         public void test10(String q) {
-            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
                 (PATH, q);
 
-                JSONObject jsonExpected = helperReq.getJSONfromJSONFile("page\\json_example_for_page_param_with_error.json");
+                JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("page\\json_example_for_page_param_with_error.json");
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                helperReq.validateSchema
+                HelperReq.validateSchema
                     ("page\\param_page_code_error_schema.json",
                             jsonObject);
 
         }
 
 
-        // "Turning pages"
-        // regions should not be repeated
-        // for different pages
-       @Test
+
+       @Test(description = "regions should not be repeated for different pages")
        public void test12() {
 
             List<String> pages = Arrays.asList("?page=1", "?page=2", "?page=3");
@@ -78,7 +74,7 @@ public class ReqWithParamPage extends ReqBase {
             for (String q : pages) {
 
                 numPage++;
-                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString(PATH, q);
+                HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH, q);
 
                     JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                     JSONArray tmpObj = jsonObject.getJSONArray("items");
@@ -90,7 +86,7 @@ public class ReqWithParamPage extends ReqBase {
                         String name = mJsonObject.get("name").toString();
                         _listOfRegions.add(name);
 
-                        Assert.assertTrue(!helperReq.arrayContains(name, listOfRegions),
+                        Assert.assertTrue(!HelperReq.arrayContains(name, listOfRegions),
                             "List of regions: " + listOfRegions + "\n"
                                     + "Current region: " + name + " - already was in response\n"
                                     + "Current page: " + q + "\n");

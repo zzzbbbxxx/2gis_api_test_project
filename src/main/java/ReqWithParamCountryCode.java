@@ -24,18 +24,18 @@ public class ReqWithParamCountryCode extends ReqBase {
                     };
         }
 
-        // Tests for country_code = 0/empty symbols
-        // and ...not in set [ru, kg, kz, cz]
-        @Test(dataProvider = "Data-Provider-Function_test7")
+
+        @Test(dataProvider = "Data-Provider-Function_test7",
+        description = "country_code = 0/empty symbols and ...not in set [ru, kg, kz, cz]" )
         public void test7(String q)  {
-            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
                         (PATH,q);
 
-            JSONObject jsonExpected = helperReq.getJSONfromJSONFile("countrycode/json_example_for_country_code_param_with_error.json");
+            JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("countrycode/json_example_for_country_code_param_with_error.json");
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-            helperReq.validateSchema("countrycode/param_country_code_error_schema.json",
+            HelperReq.validateSchema("countrycode/param_country_code_error_schema.json",
                             jsonObject);
 
         }
@@ -58,7 +58,7 @@ public class ReqWithParamCountryCode extends ReqBase {
         description = "code for regions in response must be equal code in param")
         public void test8(String q1, String q2) {
 
-            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
                 (PATH,q1+q2);
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());

@@ -29,14 +29,14 @@ public class ReqWithParamPageSize extends ReqBase {
         @Test(dataProvider = "Data-Provider-Function-test14")
         public void test14(String q)  {
 
-                HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
+                HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
                         (PATH,q);
 
-                        JSONObject jsonExpected = helperReq.getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error.json");
+                        JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error.json");
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                        helperReq.validateSchema
+                        HelperReq.validateSchema
                                 ("page_size\\param_page_size_code_error_schema.json",
                                         jsonObject);
 
@@ -54,20 +54,19 @@ public class ReqWithParamPageSize extends ReqBase {
             };
             }
 
-         // Tests page_size = 0, 1, -1
-         // ...status code = 200
-         // ...structure of json = errorscheme
-         @Test(dataProvider = "Data-Provider-Function-test15")
+
+         @Test(dataProvider = "Data-Provider-Function-test15",
+         description = "page_size = 0, 1, -1" )
          public void test15(String q)  {
 
-            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
                 (PATH,q);
 
-            JSONObject jsonExpected = helperReq.getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error2.json");
+            JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error2.json");
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-            helperReq.validateSchema
+            HelperReq.validateSchema
                     ("page_size\\param_page_size_code_error_schema2.json",
                             jsonObject);
 
@@ -90,7 +89,7 @@ public class ReqWithParamPageSize extends ReqBase {
         description = "items in JSON must be equal page_size")
         public void test16(String q, int i)  {
 
-            HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
+            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
                 (PATH,q);
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());

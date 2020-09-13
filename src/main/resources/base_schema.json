@@ -47,5 +47,5 @@
       }
     }
   },
-  "required": [ "total", "items", "total_"]
+  "required": [ "total", "items"]
 }
