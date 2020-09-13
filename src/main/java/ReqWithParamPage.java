@@ -25,13 +25,8 @@ public class ReqWithParamPage extends ReqBase {
 
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                boolean validation = helperReq.validationSchema
-                    ("page\\param_page_code_error_schema_2.json",
+                helperReq.validateSchema("page\\param_page_code_error_schema_2.json",
                             jsonObject);
-
-                assertTrue(validation, "Response must be equal ErrorSchema,\n"
-                    + "Response Expected: " + jsonExpected + "\n"
-                    + "Responce Actual: " + jsonObject);
 
         }
 
@@ -63,13 +58,9 @@ public class ReqWithParamPage extends ReqBase {
                 JSONObject jsonExpected = helperReq.getJSONfromJSONFile("page\\json_example_for_page_param_with_error.json");
                 JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                boolean validation = helperReq.validationSchema
+                helperReq.validateSchema
                     ("page\\param_page_code_error_schema.json",
                             jsonObject);
-
-                assertTrue(validation, "Response must be equal ErrorSchema,\n"
-                    + "Response Expected: " + jsonExpected + "\n"
-                    + "Responce Actual: " + jsonObject);
 
         }
 

@@ -8,28 +8,26 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.testng.Assert;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static org.testng.Assert.*;
 
  public  class HelperReq {
 
 
-        public static boolean validationSchema(String pathToSchema, org.json.JSONObject json) {
+         public static void validateSchema(String pathToSchema, JSONObject json) {
 
-                org.json.JSONObject jsonSchema = new org.json.JSONObject(new JSONTokener(ReqWithParamQ.class.getResourceAsStream(pathToSchema)));
-                Schema schema = SchemaLoader.load(jsonSchema);
+             org.json.JSONObject jsonSchema = new org.json.JSONObject
+                 (new JSONTokener(String.valueOf(getJSONfromJSONFile(pathToSchema))));
+             Schema schema = SchemaLoader.load(jsonSchema);
 
+             try {
+                 schema.validate(json);
+             } catch (Exception exception){
+                 throw new AssertionError( exception.getMessage());
 
-                try {
-                        schema.validate(json);
-                        return true;
-                } catch (ValidationException e) {
-                        return false;
-                }
-
-        }
+             }
+         }
 
 
         public static org.json.JSONObject sendRequestGetJSON(String url, String params) {
@@ -76,7 +74,9 @@ import static org.testng.Assert.*;
         public static JSONObject getJSONfromJSONFile (String path) {
 
                 JSONObject json =
-                        new JSONObject(new JSONTokener(ReqWithParamQ.class.getResourceAsStream
+                        new JSONObject(
+                                new JSONTokener
+                                        (ReqWithParamQ.class.getResourceAsStream
                                 (path)));
 
                 return json;

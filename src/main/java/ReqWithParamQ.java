@@ -3,8 +3,6 @@ import org.json.JSONObject;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
-
 public class ReqWithParamQ extends ReqBase {
 
 
@@ -30,12 +28,8 @@ public class ReqWithParamQ extends ReqBase {
 
                 org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
 
-                boolean validation = helperReq.validationSchema
+                helperReq.validateSchema
                         (ERROR_SCHEMA_FOR_0_1_2_SYMBOLS_JSON, jsonObject);
-
-                assertTrue(validation,"Response must match the ErrorSchema,\n"
-                        +"Response Expected: "+ jsonExpected+"\n"
-                        +"Responce Actual: "+ jsonObject);
 
         }
 
@@ -62,13 +56,9 @@ public class ReqWithParamQ extends ReqBase {
 
                 org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
 
-                boolean validation = helperReq.validationSchema
+                helperReq.validateSchema
                         ("/q/param_q_scheme_for_success_search_for_3_symbols.json",
                                 jsonObject);
-
-                assertTrue(validation, "Response for param q=\"нов\" must be equal schema,\n"
-                        + "Response Expected: " + jsonExpected + "\n"
-                        + "Responce Actual: " + jsonObject);
 
         }
 
@@ -84,13 +74,9 @@ public class ReqWithParamQ extends ReqBase {
 
             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
 
-            boolean validation = helperReq.validationSchema
+            helperReq.validateSchema
                         ("q\\param_q_scheme_for_unsuccess_search_for_3_symbols.json",
                                 jsonObject);
-
-                assertTrue(validation, "Response for param q=\"нос\" must be equal schema,\n"
-                        + "Response Expected: empty array items \n"
-                        + "Responce Actual: " + jsonObject);
 
         }
 
@@ -104,14 +90,9 @@ public class ReqWithParamQ extends ReqBase {
 
              org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
 
-             boolean validation = helperReq.validationSchema
+             helperReq.validateSchema
                 ("q/param_q_scheme_for_success_search_for_3_symbols.json",
                         jsonObject);
-
-             assertTrue(validation, "Response for param q=\"нов\" must be equal schema,\n"
-                + "Response Expected: " + jsonExpected + "\n"
-                + "Responce Actual: " + jsonObject);
-
         }
 
         @Test(description = "searching by full name of regions")
@@ -124,14 +105,9 @@ public class ReqWithParamQ extends ReqBase {
 
             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
 
-            boolean validation = helperReq.validationSchema
+            helperReq.validateSchema
                 ("q/param_q_scheme_for_success_search_for_3_symbols.json",
                         jsonObject);
-
-            assertTrue(validation, "Response for param q=\"нов\" must be equal schema,\n"
-                + "Response Expected: " + jsonExpected + "\n"
-                + "Responce Actual: " + jsonObject);
-
         }
 
 
@@ -162,13 +138,9 @@ public class ReqWithParamQ extends ReqBase {
             JSONObject jsonExpected = helperReq.getJSONfromJSONFile("/q/json_example_for_q_param_with_country_code_param.json");
             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
 
-            boolean validation = helperReq.validationSchema
+            helperReq.validateSchema
                 ("q/param_q_scheme_for_search_with_country_code_param.json",
                         jsonObject);
-
-            assertTrue(validation, "Response for: "+q+" ...must be equal Scheme,\n"
-                + "Response Expected: " + jsonExpected + "\n"
-                + "Responce Actual: " + jsonObject);
 
         }
 

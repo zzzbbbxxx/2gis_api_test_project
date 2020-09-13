@@ -6,10 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -34,12 +31,10 @@ public class ReqDefault extends ReqBase {
         @Test
         public void test2() {
 
-                org.json.JSONObject jsonResponse = helperReq.sendRequestGetJSON
+                JSONObject jsonResponse = helperReq.sendRequestGetJSON
                         (PATH,"");
 
-                boolean validation = helperReq.validationSchema(BASE_SCHEMA,jsonResponse);
-
-                assertTrue(validation);
+                helperReq.validateSchema(BASE_SCHEMA,jsonResponse);
         }
 
 
@@ -136,16 +131,12 @@ public class ReqDefault extends ReqBase {
                 JSONObject jsonObject1 = new JSONObject(jsonResponse1.getBody());
                 JSONObject jsonObject2 = new JSONObject(jsonResponse2.getBody());
 
-                boolean validation = helperReq.validationSchema
-                        (BASE_SCHEMA,
-                                jsonObject1);
+                helperReq.validateSchema(BASE_SCHEMA,jsonObject1);
 
-                if (validation)
-                        assertEquals(jsonObject1.toString(), jsonObject2.toString(),
+                assertEquals(jsonObject1.toString(), jsonObject2.toString(),
                                 "Page by default must be equel for response for \"page=1\"\n"
                                         + "Response for \"page=1\": " + jsonObject1 + "\n"
                                         + "Default: " + jsonObject2);
-
 
         }
 

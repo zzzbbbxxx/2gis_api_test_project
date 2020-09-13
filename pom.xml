@@ -10,6 +10,11 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>1.0.43</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>

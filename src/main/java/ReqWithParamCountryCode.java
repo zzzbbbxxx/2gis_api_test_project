@@ -35,13 +35,8 @@ public class ReqWithParamCountryCode extends ReqBase {
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-            boolean validation = helperReq.validationSchema("countrycode/param_country_code_error_schema.json",
-                                        jsonObject);
-
-            assertTrue(validation,"Response must be equal ErrorSchema,\n"
-                        +"Response Expected: "+ jsonExpected+"\n"
-                        +"Responce Actual: "+ jsonObject);
-
+            helperReq.validateSchema("countrycode/param_country_code_error_schema.json",
+                            jsonObject);
 
         }
 

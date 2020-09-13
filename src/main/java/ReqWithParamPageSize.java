@@ -36,12 +36,9 @@ public class ReqWithParamPageSize extends ReqBase {
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-                        boolean validation = helperReq.validationSchema
+                        helperReq.validateSchema
                                 ("page_size\\param_page_size_code_error_schema.json",
                                         jsonObject);
-                        assertTrue(validation,"Response must be equal ErrorSchema,\n"
-                        +"Response Expected: "+ jsonExpected+"\n"
-                        +"Responce Actual: "+ jsonObject);
 
         }
 
@@ -70,12 +67,9 @@ public class ReqWithParamPageSize extends ReqBase {
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-            boolean validation = helperReq.validationSchema
+            helperReq.validateSchema
                     ("page_size\\param_page_size_code_error_schema2.json",
                             jsonObject);
-            assertTrue(validation,"Response must be equal ErrorSchema,\n"
-                    +"Response Expected: "+ jsonExpected+"\n"
-                    +"Responce Actual: "+ jsonObject);
 
         }
 
@@ -99,9 +93,9 @@ public class ReqWithParamPageSize extends ReqBase {
             HttpResponse<String> jsonResponse = helperReq.sendRequestGetResponseString
                 (PATH,q);
 
-                JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-                JSONArray tmpObj = jsonObject.getJSONArray("items");
-                Assert.assertEquals(tmpObj.length(),i,"Count regions in response by default must be equel: "+i);
+            JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+            JSONArray tmpObj = jsonObject.getJSONArray("items");
+            Assert.assertEquals(tmpObj.length(),i,"Count regions in response by default must be equel: "+i);
 
         }
 

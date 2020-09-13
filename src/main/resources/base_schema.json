@@ -3,6 +3,10 @@
   "description": "...",
   "type": "object",
   "properties": {
+    "total_": {
+      "description": "The unique identifier for a product",
+      "type": "integer"
+    },
     "total": {
       "description": "The unique identifier for a product",
       "type": "integer"
@@ -43,5 +47,5 @@
       }
     }
   },
-  "required": [ "total", "items"]
+  "required": [ "total", "items", "total_"]
 }
