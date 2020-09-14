@@ -42,13 +42,11 @@ public class ReqDefault extends ReqBase {
 
                 List<String> pages = Arrays.asList("?page=1", "?page=2", "?page=3");
                 List<String> listOfRegions = new ArrayList<String>();
-                int numPage = 0;
                 int count = 0;
                 int total = 0;
 
                 for (String q : pages) {
 
-                        numPage++;
                         HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH, q);
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
@@ -67,9 +65,10 @@ public class ReqDefault extends ReqBase {
                                 }
                 }
 
-                int count_ = listOfRegions.size();
-
-                Assert.assertEquals(count_,total, "Фактическое количество городов, отличается от того, что идёт в переменной Total");
+                Assert.assertEquals(
+                        listOfRegions.size(),
+                        total,
+                        "Фактическое количество городов, отличается от того, что идёт в переменной Total");
 
         }
 

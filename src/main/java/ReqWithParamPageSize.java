@@ -62,12 +62,14 @@ public class ReqWithParamPageSize extends ReqBase {
             HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
                 (PATH,q);
 
-            JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("page_size\\json_example_for_page_size_param_with_error2.json");
+            JSONObject jsonExpected = helperReq.getJSONfromJSONFile
+                    ("page_size\\json_example_for_page_size_param_with_error_2.json");
 
             JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
 
-            HelperReq.validateSchema
-                    ("page_size\\param_page_size_code_error_schema2.json",
+            HelperReq.validateSchemaV2
+                    ("page_size\\param_page_size_code_error_schema_2.json",
+                  "page_size\\json_example_for_page_size_param_with_error_2.json",
                             jsonObject);
 
         }

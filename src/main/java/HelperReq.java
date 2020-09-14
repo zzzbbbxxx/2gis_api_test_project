@@ -15,6 +15,7 @@ import static org.testng.Assert.*;
  public  class HelperReq {
 
 
+
          public static void validateSchema(String pathToSchema, JSONObject json) {
 
              org.json.JSONObject jsonSchema = new org.json.JSONObject
@@ -24,10 +25,30 @@ import static org.testng.Assert.*;
              try {
                  schema.validate(json);
              } catch (Exception exception){
-                 throw new AssertionError( exception.getMessage());
+                 throw new AssertionError( exception.getMessage() + "");
 
              }
          }
+
+     public static void validateSchemaV2(String pathToSchema, String pathToExpectedJson, JSONObject json) {
+
+         org.json.JSONObject jsonSchema = new org.json.JSONObject
+                 (new JSONTokener(String.valueOf(getJSONfromJSONFile(pathToSchema))));
+
+         JSONObject jsonExpected = HelperReq.getJSONfromJSONFile
+                 (pathToExpectedJson);
+
+         Schema schema = SchemaLoader.load(jsonSchema);
+
+         try {
+             schema.validate(json);
+         } catch (Exception exception){
+             throw new AssertionError( exception.getMessage() + "\n"
+             + "Actual json: " + "\n" + json + "\n"
+             + "Expected json: " + "\n" + jsonExpected);
+
+         }
+     }
 
 
         public static org.json.JSONObject sendRequestGetJSON(String url, String params) {
@@ -75,9 +96,7 @@ import static org.testng.Assert.*;
 
                 JSONObject json =
                         new JSONObject(
-                                new JSONTokener
-                                        (ReqWithParamQ.class.getResourceAsStream
-                                (path)));
+                                new JSONTokener(ReqWithParamQ.class.getResourceAsStream(path)));
 
                 return json;
         }
