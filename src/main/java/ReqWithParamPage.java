@@ -68,7 +68,7 @@ public class ReqWithParamPage extends ReqBase {
        public void test12() {
 
             List<String> pages = Arrays.asList("?page=1", "?page=2", "?page=3");
-            List<String> listOfRegions = new ArrayList<String>();
+            List<String> listOfRegions = new ArrayList<>();
             int numPage = 0;
 
             for (String q : pages) {
@@ -78,15 +78,15 @@ public class ReqWithParamPage extends ReqBase {
 
                     JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                     JSONArray tmpObj = jsonObject.getJSONArray("items");
-                    List<String> _listOfRegions = new ArrayList<String>();
-                    JSONObject mJsonObject = new JSONObject();
+                    List<String> _listOfRegions = new ArrayList<>();
+                    JSONObject mJsonObject;
 
                     for (int i = 0; i < tmpObj.length(); i++) {
                         mJsonObject = (JSONObject) tmpObj.get(i);
                         String name = mJsonObject.get("name").toString();
                         _listOfRegions.add(name);
 
-                        Assert.assertTrue(!HelperReq.arrayContains(name, listOfRegions),
+                        Assert.assertFalse(HelperReq.arrayContainsElem(name, listOfRegions),
                             "List of regions: " + listOfRegions + "\n"
                                     + "Current region: " + name + " - already was in response\n"
                                     + "Current page: " + q + "\n");

@@ -1,7 +1,5 @@
 public class ReqBase {
 
-    public HelperReq helperReq = new HelperReq();
-
 
     final public static String PATH = "https://regions-test.2gis.com/1.0/regions";
 

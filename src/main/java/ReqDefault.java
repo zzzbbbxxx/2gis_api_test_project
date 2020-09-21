@@ -16,7 +16,7 @@ public class ReqDefault extends ReqBase {
 
 
         @Test(description= "status code = 200")
-        public void test1() {
+        public void testStatusCode() {
 
                 HttpResponse<JsonNode> jsonResponse = HelperReq.sendRequestGetResponse
                         (PATH,"");
@@ -27,7 +27,7 @@ public class ReqDefault extends ReqBase {
 
 
         @Test(description= "structure of json are correct & contains all keys,params ")
-        public void test2() {
+        public void testResponse() {
 
                 JSONObject jsonResponse = HelperReq.sendRequestGetJSON
                         (PATH,"");
@@ -40,37 +40,69 @@ public class ReqDefault extends ReqBase {
         @Test(description= "value of total must be equal real count of regions")
         public void test3_upd() {
 
-                List<String> pages = Arrays.asList("?page=1", "?page=2", "?page=3");
-                List<String> listOfRegions = new ArrayList<String>();
+                List<String> listOfRegions = new ArrayList<>();
+                int total = HelperReq.getValue("total");
                 int count = 0;
-                int total = 0;
 
-                for (String q : pages) {
 
-                        HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH, q);
+                for (String page : Arrays.asList("?page=1", "?page=2", "?page=3")) {
+
+                        HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH, page);
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                         JSONArray tmpObj = jsonObject.getJSONArray("items");
 
-                        total = jsonObject.getInt("total");
-
                         JSONObject mJsonObject = new JSONObject();
                         count = count + tmpObj.length();
+                }
+
+                Assert.assertEquals(
+                        count,
+                        total,
+                        "Фактическое количество городов: " + count +
+                        "...отличается от значения, возвращаемого в переменной total: "+ total);
+
+        }
+
+
+        @Test(description= "regions is not repeat")
+        public void test4() {
+
+                List<String> listOfRegions = new ArrayList<>();
+                List<String> listOfRepeatRegions = new ArrayList<>();
+
+                int total = HelperReq.getValue("total");
+                int count = 0;
+
+
+                for (String page : Arrays.asList("?page=1", "?page=2", "?page=3")) {
+
+                        HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH, page);
+
+                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+                        JSONArray tmpObj = jsonObject.getJSONArray("items");
+                        JSONObject mJsonObject;
 
                         for (int i = 0; i < tmpObj.length(); i++) {
 
                                 mJsonObject = (JSONObject) tmpObj.get(i);
                                 String name = mJsonObject.get("name").toString();
-                                        if (!HelperReq.arrayContains(name, listOfRegions)) listOfRegions.add(name);
+
+                                        if (HelperReq.arrayContainsElem(name,listOfRegions)) {
+                                                count++;
+                                                listOfRepeatRegions.add(name);
+                                        }
+
+                                        if (!HelperReq.arrayContainsElem(name, listOfRegions))
+                                                listOfRegions.add(name);
                                 }
                 }
 
-                Assert.assertEquals(
-                        listOfRegions.size(),
-                        total,
-                        "Фактическое количество городов, отличается от того, что идёт в переменной Total");
+                Assert.assertEquals(count,0,"Repeating regions: " + listOfRepeatRegions.toString());
 
         }
+
+
 
 
         @Test(description= "page_size default must be contains 15 regions")
@@ -156,21 +188,25 @@ public class ReqDefault extends ReqBase {
 
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                         JSONArray tmpObj = jsonObject.getJSONArray("items");
-                        JSONObject mJsonObject = new JSONObject();
+                        JSONObject mJsonObject;
 
                 String code;
-                HashSet<String> codeList = new HashSet<String>();
+                HashSet<String> codeSet = new HashSet<>();
 
                         for (int i = 0; i < tmpObj.length() ; i++) {
 
                                 mJsonObject = (JSONObject)tmpObj.get(i);
                                 code = mJsonObject.getJSONObject("country").get("code").toString();
-                                codeList.add(code);
+                                codeSet.add(code);
                         }
 
-                Assert.assertTrue(HelperReq.arrayContains__(codeList),
-                        "Code for countries by default de must be in {ru,kg, kz,cz} /n "
-                +codeList);
+
+                List<String> codeList = Arrays.asList("ru", "kg",  "kz", "cz");
+                Assert.assertTrue(HelperReq.arrayContainsElemFrom(
+                        codeSet,
+                        codeList),
+                        "Code on this page: " + codeSet + "\n" +
+                                "Code by default must be in { ru, kg, kz, cz } \n ");
 
 
 

@@ -4,6 +4,7 @@ import kong.unirest.Unirest;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.testng.Assert;
@@ -65,12 +66,10 @@ import static org.testng.Assert.*;
 
         public static HttpResponse<JsonNode> sendRequestGetResponse (String url, String params) {
 
-                HttpResponse<JsonNode> jsonResponse
-                        = Unirest.get(url+params)
+            return Unirest.get(url+params)
                         .header("accept", "application/json")
                         .asJson();
 
-                return jsonResponse;
         }
 
 
@@ -84,7 +83,7 @@ import static org.testng.Assert.*;
 
                 assertEquals(200, jsonResponse.getStatus(),
                         "expected Status Code [200]" +
-                                " but found Status Code [" + String.valueOf(jsonResponse.getStatus())+"]");
+                                " but found Status Code [" + (jsonResponse.getStatus())+"]");
 
 
                 return jsonResponse;
@@ -94,36 +93,36 @@ import static org.testng.Assert.*;
 
         public static JSONObject getJSONfromJSONFile (String path) {
 
-                JSONObject json =
-                        new JSONObject(
+            return new JSONObject(
                                 new JSONTokener(ReqWithParamQ.class.getResourceAsStream(path)));
-
-                return json;
-        }
+         }
 
 
 
-        public static boolean arrayContains__(HashSet<String> xset ) {
+        public static boolean arrayContainsElemFrom(HashSet<String> codeSet, List<String> codeList ) {
 
-                for (String item : xset) {
-                        if (!
-                                (item.equals("ru") || item.equals("kg") || item.equals("kz")
-                                || item.equals("cz"))
-                        )
-                        {
-                                return false;
-                        }
+
+            for (String codeS : codeSet) {
+                if (! arrayContainsElem(codeS,codeList)) return false;
                 }
-                return true;
+
+            return true;
         }
 
-        public static boolean arrayContains(String value, List<String> arr ) {
-                for (String item : arr) {
-                        if (item.equals(value)) {
-                                return true;
-                        }
+        public static boolean arrayContainsElem(String value, List<String> list ) {
+
+             for (String item : list) {
+                 if (item.equals(value)) return true;
                 }
                 return false;
+        }
+
+        public static int getValue(String key){
+
+            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(ReqBase.PATH,"");
+
+            return new JSONObject(jsonResponse.getBody()).getInt(key);
+
         }
 
 
