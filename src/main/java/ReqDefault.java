@@ -40,7 +40,6 @@ public class ReqDefault extends ReqBase {
         @Test(description= "value of total must be equal real count of regions")
         public void test3_upd() {
 
-                List<String> listOfRegions = new ArrayList<>();
                 int total = HelperReq.getValue("total");
                 int count = 0;
 
@@ -52,7 +51,6 @@ public class ReqDefault extends ReqBase {
                         JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
                         JSONArray tmpObj = jsonObject.getJSONArray("items");
 
-                        JSONObject mJsonObject = new JSONObject();
                         count = count + tmpObj.length();
                 }
 
@@ -65,15 +63,13 @@ public class ReqDefault extends ReqBase {
         }
 
 
-        @Test(description= "regions is not repeat")
+        @Test(description= "regions should not be repeated for different pages")
         public void test4() {
 
                 List<String> listOfRegions = new ArrayList<>();
                 List<String> listOfRepeatRegions = new ArrayList<>();
 
-                int total = HelperReq.getValue("total");
                 int count = 0;
-
 
                 for (String page : Arrays.asList("?page=1", "?page=2", "?page=3")) {
 

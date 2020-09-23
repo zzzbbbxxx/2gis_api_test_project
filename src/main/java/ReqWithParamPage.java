@@ -63,46 +63,4 @@ public class ReqWithParamPage extends ReqBase {
         }
 
 
-
-       @Test(description = "regions should not be repeated for different pages")
-       public void test12() {
-
-            List<String> pages = Arrays.asList("?page=1", "?page=2", "?page=3");
-            List<String> listOfRegions = new ArrayList<>();
-            int numPage = 0;
-
-            for (String q : pages) {
-
-                numPage++;
-                HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH, q);
-
-                    JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-                    JSONArray tmpObj = jsonObject.getJSONArray("items");
-                    List<String> _listOfRegions = new ArrayList<>();
-                    JSONObject mJsonObject;
-
-                    for (int i = 0; i < tmpObj.length(); i++) {
-                        mJsonObject = (JSONObject) tmpObj.get(i);
-                        String name = mJsonObject.get("name").toString();
-                        _listOfRegions.add(name);
-
-                        Assert.assertFalse(HelperReq.arrayContainsElem(name, listOfRegions),
-                            "List of regions: " + listOfRegions + "\n"
-                                    + "Current region: " + name + " - already was in response\n"
-                                    + "Current page: " + q + "\n");
-                        if (i == 5) listOfRegions.add("\n");
-
-                        listOfRegions.add(name);
-                    }
-
-                    listOfRegions.add(":page=" + numPage + " ");
-
-            }
-       }
-
-
-
-
-
-
 }
