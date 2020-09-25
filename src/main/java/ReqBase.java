@@ -1,3 +1,7 @@
+import kong.unirest.HttpResponse;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class ReqBase {
 
 
@@ -11,5 +15,7 @@ public class ReqBase {
     final public static String Q_SCHEME_FOR_SUCCESS_SEARCH_FOR_3_SYMBOLS_JSON = "q/param_q_scheme_for_success_search_for_3_symbols.json";
     final public static String Q_SCHEME_FOR_UNSUCCESS_SEARCH_FOR_3_SYMBOLS_JSON = "q/param_q_scheme_for_unsuccess_search_for_3_symbols.json";
     final public static String ERROR_SCHEMA_FOR_0_1_2_SYMBOLS_JSON = "q/param_q_error_schema_for_0_1_2_symbols.json";
+
+
 
 }

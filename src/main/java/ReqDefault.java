@@ -46,11 +46,9 @@ public class ReqDefault extends ReqBase {
 
                 for (String page : Arrays.asList("?page=1", "?page=2", "?page=3")) {
 
-                        HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH, page);
-
-                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-                        JSONArray tmpObj = jsonObject.getJSONArray("items");
-
+                        JSONArray tmpObj = HelperReq.getJsonArray(
+                                HelperReq.sendRequestGetResponseString(PATH, page),
+                                "items");
                         count = count + tmpObj.length();
                 }
 
@@ -63,6 +61,7 @@ public class ReqDefault extends ReqBase {
         }
 
 
+
         @Test(description= "regions should not be repeated for different pages")
         public void test4() {
 
@@ -73,10 +72,9 @@ public class ReqDefault extends ReqBase {
 
                 for (String page : Arrays.asList("?page=1", "?page=2", "?page=3")) {
 
-                        HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH, page);
-
-                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-                        JSONArray tmpObj = jsonObject.getJSONArray("items");
+                        JSONArray tmpObj = HelperReq.getJsonArray(
+                                HelperReq.sendRequestGetResponseString(PATH, page),
+                                "items");
                         JSONObject mJsonObject;
 
                         for (int i = 0; i < tmpObj.length(); i++) {
@@ -179,11 +177,10 @@ public class ReqDefault extends ReqBase {
         description = "...")
         public void test9(String q1, String q2) {
 
-                HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
-                        (PATH,q1+q2);
 
-                        JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-                        JSONArray tmpObj = jsonObject.getJSONArray("items");
+                JSONArray tmpObj = HelperReq.getJsonArray(
+                        HelperReq.sendRequestGetResponseString(PATH,q1+q2),
+                        "items");
                         JSONObject mJsonObject;
 
                 String code;

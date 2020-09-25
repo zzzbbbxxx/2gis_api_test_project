@@ -58,11 +58,10 @@ public class ReqWithParamCountryCode extends ReqBase {
         description = "code for regions in response must be equal code in param")
         public void test8(String q1, String q2) {
 
-            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
-                (PATH,q1+q2);
+            JSONArray tmpObj = HelperReq.getJsonArray(
+                    HelperReq.sendRequestGetResponseString(PATH,q1+q2),
+                    "items");
 
-            JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-            JSONArray tmpObj = jsonObject.getJSONArray("items");
             JSONObject mJsonObject = new JSONObject();
 
             String code;

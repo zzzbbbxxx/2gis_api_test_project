@@ -52,6 +52,13 @@ import static org.testng.Assert.*;
      }
 
 
+     public static JSONArray getJsonArray(HttpResponse<String> response, String key){
+
+         JSONObject jsonObject = new JSONObject(response.getBody());
+         JSONArray tmp = jsonObject.getJSONArray(key);
+         return tmp;
+     }
+
         public static org.json.JSONObject sendRequestGetJSON(String url, String params) {
 
                  HttpResponse<JsonNode> jsonResponse
