@@ -13,92 +13,111 @@ import java.util.*;
 
 import static org.testng.Assert.*;
 
- public  class HelperReq {
+public  class HelperReq {
 
+    public static void validateSchema(String pathToSchema, JSONObject json) {
 
+        org.json.JSONObject jsonSchema = new org.json.JSONObject
+                (new JSONTokener(String.valueOf(getJSONfromJSONFile(pathToSchema))));
 
-         public static void validateSchema(String pathToSchema, JSONObject json) {
+        Schema schema = SchemaLoader.load(jsonSchema);
 
-             org.json.JSONObject jsonSchema = new org.json.JSONObject
-                 (new JSONTokener(String.valueOf(getJSONfromJSONFile(pathToSchema))));
-             Schema schema = SchemaLoader.load(jsonSchema);
-
-             try {
-                 schema.validate(json);
-             } catch (Exception exception){
+        try {
+            schema.validate(json);
+        } catch (Exception exception){
                  throw new AssertionError( exception.getMessage() + "");
-
-             }
-         }
-
-     public static void validateSchemaV2(String pathToSchema, String pathToExpectedJson, JSONObject json) {
-
-         org.json.JSONObject jsonSchema = new org.json.JSONObject
-                 (new JSONTokener(String.valueOf(getJSONfromJSONFile(pathToSchema))));
-
-         JSONObject jsonExpected = HelperReq.getJSONfromJSONFile
-                 (pathToExpectedJson);
-
-         Schema schema = SchemaLoader.load(jsonSchema);
-
-         try {
-             schema.validate(json);
-         } catch (Exception exception){
-             throw new AssertionError( exception.getMessage() + "\n"
-             + "Actual json: " + "\n" + json + "\n"
-             + "Expected json: " + "\n" + jsonExpected);
-
-         }
-     }
-
-
-     public static JSONArray getJsonArray(HttpResponse<String> response, String key){
-
-         JSONObject jsonObject = new JSONObject(response.getBody());
-         JSONArray tmp = jsonObject.getJSONArray(key);
-         return tmp;
-     }
-
-        public static org.json.JSONObject sendRequestGetJSON(String url, String params) {
-
-                 HttpResponse<JsonNode> jsonResponse
-                        = Unirest.get(url+params)
-                        .header("accept", "application/json")
-                        .asJson();
-
-                return new org.json.JSONObject(jsonResponse.getBody().toString());
         }
 
+    }
 
 
-        public static HttpResponse<JsonNode> sendRequestGetResponse (String url, String params) {
+    public static void validateSchemaV2(String pathToSchema, String pathToExpectedJson, JSONObject json) {
 
-            return Unirest.get(url+params)
-                        .header("accept", "application/json")
-                        .asJson();
+        org.json.JSONObject jsonSchema = new org.json.JSONObject
+                (new JSONTokener(String.valueOf(getJSONfromJSONFile(pathToSchema))));
 
-        }
+        JSONObject jsonExpected = HelperReq.getJSONfromJSONFile
+                (pathToExpectedJson);
+
+        Schema schema = SchemaLoader.load(jsonSchema);
+
+        try {
+            schema.validate(json);
+        } catch (Exception exception){
+            throw new AssertionError( exception.getMessage() + "\n"
+                    + "Actual json: " + "\n" + json + "\n"
+                    + "Expected json: " + "\n" + jsonExpected);
+         }
+
+    }
 
 
+    public static JSONArray getJsonArray(HttpResponse<String> response, String key){
 
-        public static HttpResponse<String> sendRequestGetResponseString (String url, String params) {
+        JSONObject jsonObject = new JSONObject(response.getBody());
 
-                HttpResponse<String> jsonResponse
+        JSONArray tmp = jsonObject.getJSONArray(key);
+
+        return tmp;
+    }
+
+
+    public static JSONArray getJsonArray(JSONObject jsonObject, String key){
+
+        JSONArray tmp = jsonObject.getJSONArray(key);
+
+        return tmp;
+
+    }
+
+
+    public static HttpResponse<String> sendRequestGetResponseString (String url, String params) {
+
+        HttpResponse<String> jsonResponse
                         = Unirest.get(url+params)
                         .header("accept", "application/json")
                         .asString();
 
-                assertEquals(200, jsonResponse.getStatus(),
+        assertEquals(200, jsonResponse.getStatus(),
                         "expected Status Code [200]" +
                                 " but found Status Code [" + (jsonResponse.getStatus())+"]");
 
+        return jsonResponse;
 
-                return jsonResponse;
-        }
+    }
+
+
+     public static JSONObject sendRequestGetJSON (String url, String params) {
+
+         HttpResponse<String> jsonResponse
+                 = Unirest.get(url+params)
+                 .header("accept", "application/json")
+                 .asString();
+
+         assertEquals(200, jsonResponse.getStatus(),
+                 "expected Status Code [200]" +
+                         " but found Status Code [" + (jsonResponse.getStatus())+"]");
+
+
+         return new org.json.JSONObject(jsonResponse.getBody());
+
+     }
+
+
+    public static int getCountOfRegions (String url, String params) {
+
+        JSONObject jsonObject = HelperReq.sendRequestGetJSON(url, params);
+
+        JSONArray tmpObj = jsonObject.getJSONArray("items");
+
+        return tmpObj.length();
+
+
+    }
 
 
 
-        public static JSONObject getJSONfromJSONFile (String path) {
+     public static JSONObject getJSONfromJSONFile (String path) {
 
             return new JSONObject(
                                 new JSONTokener(ReqWithParamQ.class.getResourceAsStream(path)));

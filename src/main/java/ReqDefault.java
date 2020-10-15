@@ -14,25 +14,13 @@ import static org.testng.Assert.assertTrue;
 public class ReqDefault extends ReqBase {
 
 
-
-        @Test(description= "status code = 200")
-        public void testStatusCode() {
-
-                HttpResponse<JsonNode> jsonResponse = HelperReq.sendRequestGetResponse
-                        (PATH,"");
-
-                assertEquals(200, jsonResponse.getStatus());
-
-        }
-
-
         @Test(description= "structure of json are correct & contains all keys,params ")
         public void testResponse() {
 
-                JSONObject jsonResponse = HelperReq.sendRequestGetJSON
-                        (PATH,"");
+                JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,"");
 
                 HelperReq.validateSchema(BASE_SCHEMA,jsonResponse);
+
         }
 
 
@@ -43,18 +31,11 @@ public class ReqDefault extends ReqBase {
                 int total = HelperReq.getValue("total");
                 int count = 0;
 
+                for (String page : Arrays.asList("?page=1", "?page=2", "?page=3"))
+                        count = count + HelperReq.getJsonArray(HelperReq.sendRequestGetJSON(PATH, page),
+                                        "items").length();
 
-                for (String page : Arrays.asList("?page=1", "?page=2", "?page=3")) {
-
-                        JSONArray tmpObj = HelperReq.getJsonArray(
-                                HelperReq.sendRequestGetResponseString(PATH, page),
-                                "items");
-                        count = count + tmpObj.length();
-                }
-
-                Assert.assertEquals(
-                        count,
-                        total,
+                Assert.assertEquals(count, total,
                         "Фактическое количество городов: " + count +
                         "...отличается от значения, возвращаемого в переменной total: "+ total);
 
@@ -73,8 +54,8 @@ public class ReqDefault extends ReqBase {
                 for (String page : Arrays.asList("?page=1", "?page=2", "?page=3")) {
 
                         JSONArray tmpObj = HelperReq.getJsonArray(
-                                HelperReq.sendRequestGetResponseString(PATH, page),
-                                "items");
+                                HelperReq.sendRequestGetJSON(PATH, page), "items");
+
                         JSONObject mJsonObject;
 
                         for (int i = 0; i < tmpObj.length(); i++) {
@@ -102,9 +83,7 @@ public class ReqDefault extends ReqBase {
         @Test(description= "page_size default must be contains 15 regions")
         public void test13() {
 
-                HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH,"");
-
-                JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+                org.json.JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,"");
 
                 Assert.assertEquals(jsonObject.getJSONArray("items").length(),
                                 15,
@@ -129,14 +108,9 @@ public class ReqDefault extends ReqBase {
         description = "page by default must be equel page=1" )
         public void test11(String q1, String q2) {
 
-                HttpResponse<String> jsonResponse1 = HelperReq.sendRequestGetResponseString
-                        (PATH, q1);
 
-                HttpResponse<String> jsonResponse2 = HelperReq.sendRequestGetResponseString
-                        (PATH, q2);
-
-                JSONObject jsonObject1 = new JSONObject(jsonResponse1.getBody());
-                JSONObject jsonObject2 = new JSONObject(jsonResponse2.getBody());
+                org.json.JSONObject jsonObject1 = HelperReq.sendRequestGetJSON(PATH, q1);
+                org.json.JSONObject jsonObject2 = HelperReq.sendRequestGetJSON(PATH, q2);
 
                 HelperReq.validateSchema(BASE_SCHEMA,jsonObject1);
 
@@ -177,17 +151,15 @@ public class ReqDefault extends ReqBase {
         description = "...")
         public void test9(String q1, String q2) {
 
-
                 JSONArray tmpObj = HelperReq.getJsonArray(
-                        HelperReq.sendRequestGetResponseString(PATH,q1+q2),
+                        HelperReq.sendRequestGetJSON(PATH,q1+q2),
                         "items");
-                        JSONObject mJsonObject;
 
+                JSONObject mJsonObject;
                 String code;
                 HashSet<String> codeSet = new HashSet<>();
 
                         for (int i = 0; i < tmpObj.length() ; i++) {
-
                                 mJsonObject = (JSONObject)tmpObj.get(i);
                                 code = mJsonObject.getJSONObject("country").get("code").toString();
                                 codeSet.add(code);

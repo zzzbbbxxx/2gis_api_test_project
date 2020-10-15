@@ -18,14 +18,9 @@ public class ReqWithParamPage extends ReqBase {
         @Test(description = "page must be > 0")
         public void test10_0() {
 
-            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
-                (PATH,"?page=-1");
+            JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,"?page=-1");
 
-                JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("page\\json_example_for_page_param_with_error_2.json");
-
-                JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
-
-                HelperReq.validateSchema("page\\param_page_code_error_schema_2.json",
+            HelperReq.validateSchema("page\\error_schema_v2.json",
                             jsonObject);
 
         }
@@ -50,15 +45,10 @@ public class ReqWithParamPage extends ReqBase {
         @Test(dataProvider = "Data-Provider-Function_test10",
         description = "page = empty, 0, 1.5, one")
         public void test10(String q) {
-            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
-                (PATH, q);
 
-                JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("page\\json_example_for_page_param_with_error.json");
-                JSONObject jsonObject = new JSONObject(jsonResponse.getBody());
+            JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH, q);
 
-                HelperReq.validateSchema
-                    ("page\\param_page_code_error_schema.json",
-                            jsonObject);
+            HelperReq.validateSchema("page\\error_schema_v1.json", jsonObject);
 
         }
 

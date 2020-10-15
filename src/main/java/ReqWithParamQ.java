@@ -7,8 +7,8 @@ public class ReqWithParamQ extends ReqBase {
 
 
 
-        @DataProvider(name = "Data-Provider-Function_test1")
-        public Object[][] parameterTestProvider_test1() {
+        @DataProvider(name = "dataProvider_for_error_searchTest")
+        public Object[][] dataProviderForSearchV1() {
             return new Object[][] {
                     {"?q=но"},
                     {"?q=н"},
@@ -18,18 +18,12 @@ public class ReqWithParamQ extends ReqBase {
         }
 
         @Test(description = "search with error response for q = 0,1,2 symbols",
-              dataProvider = "Data-Provider-Function_test1")
+              dataProvider = "dataProvider_for_error_searchTest")
+        public void errorSearchTest(String q)  {
 
-        public void test1(String q)  {
+            org.json.JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,q);
 
-                HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString(PATH,q);
-
-                JSONObject jsonExpected = HelperReq.getJSONfromJSONFile(EXAMPLE_FOR_Q_PARAM_WITH_ERROR_JSON);
-
-                org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
-
-                HelperReq.validateSchema
-                        (ERROR_SCHEMA_FOR_0_1_2_SYMBOLS_JSON, jsonObject);
+            HelperReq.validateSchema(ERROR_SCHEMA_FOR_0_1_2_SYMBOLS_JSON, jsonObject);
 
         }
 
@@ -46,65 +40,41 @@ public class ReqWithParamQ extends ReqBase {
 
         @Test(description = "Successful search by symbols",
               dataProvider = "Data-Provider-Function-test2")
+        public void successfulSearchTest(String q) {
 
-        public void test2(String q) {
+            org.json.JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH, "?q="+q);
 
-                HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
-                        (PATH, "?q="+q);
-
-                JSONObject jsonExpected = HelperReq.getJSONfromJSONFile(SUCCESS_SEARCH_FOR_3_SYMBOLS_JSON);
-
-                org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
-
-                HelperReq.validateSchema
-                        ("/q/param_q_scheme_for_success_search_for_3_symbols.json",
-                                jsonObject);
+            HelperReq.validateSchema(Q_SCHEME_FOR_SUCCESS_SEARCH_FOR_3_SYMBOLS_JSON, jsonObject);
 
         }
 
 
         @Test(description = "unsuccessful search by 3 symbols")
-        public void test3() {
+        public void unsuccessfulSearchTest() {
 
-                HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
-                        (PATH, "?q="+"нос");
+            org.json.JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH, "?q="+"нос");
 
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
-
-            HelperReq.validateSchema
-                        ("q\\param_q_scheme_for_unsuccess_search_for_3_symbols.json",
-                                jsonObject);
+            HelperReq.validateSchema(Q_SCHEME_FOR_UNSUCCESS_SEARCH_FOR_3_SYMBOLS_JSON, jsonObject);
 
         }
 
 
          @Test(description = "successful search in UPcase")
-         public void test4() {
-             HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
-                (PATH, "?q="+"НОВ");
+         public void successSearchTestForUpcase() {
 
-             JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
+             org.json.JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH, "?q="+"НОВ");
 
-             org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
+             HelperReq.validateSchema(Q_SCHEME_FOR_SUCCESS_SEARCH_FOR_3_SYMBOLS_JSON, jsonObject);
 
-             HelperReq.validateSchema
-                ("q/param_q_scheme_for_success_search_for_3_symbols.json",
-                        jsonObject);
         }
 
         @Test(description = "searching by full name of regions")
-        public void test5() {
+        public void successSearchByFullNameOfRegions() {
 
-            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
-                (PATH, "?q="+"Новосибирск");
+            org.json.JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH, "?q="+"Новосибирск");
 
-            JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("/q/json_example_for_q_param_success_search_for_3_symbols.json");
+            HelperReq.validateSchema(Q_SCHEME_FOR_SUCCESS_SEARCH_FOR_3_SYMBOLS_JSON, jsonObject);
 
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody().toString());
-
-            HelperReq.validateSchema
-                ("q/param_q_scheme_for_success_search_for_3_symbols.json",
-                        jsonObject);
         }
 
 
@@ -129,15 +99,9 @@ public class ReqWithParamQ extends ReqBase {
 
        public void test6(String q) {
 
-            HttpResponse<String> jsonResponse = HelperReq.sendRequestGetResponseString
-                (PATH, q);
+           org.json.JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH, q);
 
-            JSONObject jsonExpected = HelperReq.getJSONfromJSONFile("/q/json_example_for_q_param_with_country_code_param.json");
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsonResponse.getBody());
-
-            HelperReq.validateSchema
-                ("q/param_q_scheme_for_search_with_country_code_param.json",
-                        jsonObject);
+           HelperReq.validateSchema(Q_SCHEME_FOR_IGNORING_OTHER_PARAMS, jsonObject);
 
         }
 
