@@ -7,22 +7,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class ReqDefault extends ReqBase {
 
-
-        @Test(description= "structure of json are correct & contains all keys,params ")
-        public void testJSONisCorrect() {
-
-                JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,"");
-
-                HelperReq.validateSchema(BASE_SCHEMA,jsonResponse);
-
-        }
 
 
         @Test(description= "value of total must be equal real count of regions")
@@ -33,14 +22,13 @@ public class ReqDefault extends ReqBase {
 
                 for (String page : Arrays.asList("?page=1", "?page=2", "?page=3"))
                         count = count + HelperReq.getJsonArray(HelperReq.sendRequestGetJSON(PATH, page),
-                                        "items").length();
+                                "items").length();
 
                 Assert.assertEquals(count, total,
                         "Фактическое количество городов: " + count +
-                        "...отличается от значения, возвращаемого в переменной total: "+ total);
+                                "...отличается от значения, возвращаемого в переменной total: "+ total);
 
         }
-
 
         @Test(description= "page_size default must be contains 15 regions")
         public void testDefaultPageSize() {

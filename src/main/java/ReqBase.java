@@ -15,5 +15,6 @@ public class ReqBase {
     final public static String Q_SCHEME_FOR_SUCCESS_SEARCH_FOR_3_SYMBOLS_JSON = "q/success_scheme_v2.json";
     final public static String Q_SCHEME_FOR_UNSUCCESS_SEARCH_FOR_3_SYMBOLS_JSON = "q/success_scheme_v3.json";
     final public static String ERROR_SCHEMA_FOR_0_1_2_SYMBOLS_JSON = "q/error_schema_v1.json";
+    final public static String ERROR_SCHEMA_FOR_30_SYMBOLS_JSON = "q/error_schema_v2.json";
 
 }

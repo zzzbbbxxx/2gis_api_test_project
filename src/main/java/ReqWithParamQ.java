@@ -28,6 +28,15 @@ public class ReqWithParamQ extends ReqBase {
         }
 
 
+    @Test(description = "search with error response for q = 31 symbols")
+    public void errorSearchTestForQ30Sym()  {
+
+        org.json.JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,
+                "?q=012345678900123456789001234567890");
+
+        HelperReq.validateSchema(ERROR_SCHEMA_FOR_30_SYMBOLS_JSON, jsonObject);
+
+    }
 
          //This function will provide the patameter data
          @DataProvider(name = "Data-Provider-Function-test2")
