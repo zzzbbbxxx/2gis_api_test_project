@@ -7,6 +7,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -15,7 +16,7 @@ public class ReqDefault extends ReqBase {
 
 
         @Test(description= "structure of json are correct & contains all keys,params ")
-        public void testResponse() {
+        public void testJSONisCorrect() {
 
                 JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,"");
 
@@ -26,7 +27,7 @@ public class ReqDefault extends ReqBase {
 
 
         @Test(description= "value of total must be equal real count of regions")
-        public void test3_upd() {
+        public void testNumberOfRegions() {
 
                 int total = HelperReq.getValue("total");
                 int count = 0;
@@ -43,53 +44,18 @@ public class ReqDefault extends ReqBase {
 
 
 
-        @Test(description= "regions should not be repeated for different pages")
-        public void test4() {
-
-                List<String> listOfRegions = new ArrayList<>();
-                List<String> listOfRepeatRegions = new ArrayList<>();
-
-                int count = 0;
-
-                for (String page : Arrays.asList("?page=1", "?page=2", "?page=3")) {
-
-                        JSONArray tmpObj = HelperReq.getJsonArray(
-                                HelperReq.sendRequestGetJSON(PATH, page), "items");
-
-                        JSONObject mJsonObject;
-
-                        for (int i = 0; i < tmpObj.length(); i++) {
-
-                                mJsonObject = (JSONObject) tmpObj.get(i);
-                                String name = mJsonObject.get("name").toString();
-
-                                        if (HelperReq.arrayContainsElem(name,listOfRegions)) {
-                                                count++;
-                                                listOfRepeatRegions.add(name);
-                                        }
-
-                                        if (!HelperReq.arrayContainsElem(name, listOfRegions))
-                                                listOfRegions.add(name);
-                                }
-                }
-
-                Assert.assertEquals(count,0,"Repeating regions: " + listOfRepeatRegions.toString());
-
-        }
 
 
 
 
         @Test(description= "page_size default must be contains 15 regions")
-        public void test13() {
+        public void testDefaultPageSize() {
 
                 org.json.JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,"");
 
                 Assert.assertEquals(jsonObject.getJSONArray("items").length(),
                                 15,
                                 "Count of regions in response by default must be equal: 15 \n");
-
-
 
         }
 
@@ -106,7 +72,7 @@ public class ReqDefault extends ReqBase {
 
         @Test(dataProvider = "Data-Provider-Function-test11",
         description = "page by default must be equel page=1" )
-        public void test11(String q1, String q2) {
+        public void testDefaultPageNumber(String q1, String q2) {
 
 
                 org.json.JSONObject jsonObject1 = HelperReq.sendRequestGetJSON(PATH, q1);
@@ -122,6 +88,31 @@ public class ReqDefault extends ReqBase {
         }
 
 
+        @Test(description= "regions should not be repeated for different pages")
+        public void testRegionsNotRepeated() {
+
+                List<String> listOfRegions = new ArrayList<>();
+                List<String> listOfRepeatRegions = new ArrayList<>();
+
+                for (String page : Arrays.asList("?page=1", "?page=2", "?page=3")) {
+
+                        JSONArray tmpObj = HelperReq.getJsonArray(
+                                HelperReq.sendRequestGetJSON(PATH, page), "items");
+
+                        tmpObj.forEach(item -> {
+                                String name = HelperReq.getNameOfRegion((JSONObject)item);
+
+                                if (HelperReq.arrayContainsElem(name,listOfRegions))
+                                        listOfRepeatRegions.add(name);
+
+                                else listOfRegions.add(name);
+                        });
+                }
+
+                Assert.assertEquals(listOfRepeatRegions.size(),
+                        0,"Repeating regions: " + listOfRepeatRegions.toString());
+
+        }
 
 
 
@@ -149,22 +140,17 @@ public class ReqDefault extends ReqBase {
 
         @Test(dataProvider = "Data-Provider-Function_test9",
         description = "...")
-        public void test9(String q1, String q2) {
+        public void testDefaultCountryCode(String q1, String q2) {
 
                 JSONArray tmpObj = HelperReq.getJsonArray(
                         HelperReq.sendRequestGetJSON(PATH,q1+q2),
                         "items");
 
-                JSONObject mJsonObject;
-                String code;
                 HashSet<String> codeSet = new HashSet<>();
 
-                        for (int i = 0; i < tmpObj.length() ; i++) {
-                                mJsonObject = (JSONObject)tmpObj.get(i);
-                                code = mJsonObject.getJSONObject("country").get("code").toString();
-                                codeSet.add(code);
-                        }
-
+                tmpObj.forEach(item -> {
+                        codeSet.add(HelperReq.getCountryCodeValue((JSONObject)item));
+                });
 
                 List<String> codeList = Arrays.asList("ru", "kg",  "kz", "cz");
                 Assert.assertTrue(HelperReq.arrayContainsElemFrom(
@@ -172,10 +158,7 @@ public class ReqDefault extends ReqBase {
                         codeList),
                         "Code on this page: " + codeSet + "\n" +
                                 "Code by default must be in { ru, kg, kz, cz } \n ");
-
-
-
-
         }
+
 
 }

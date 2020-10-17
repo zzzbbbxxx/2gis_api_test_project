@@ -1,13 +1,10 @@
 import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.testng.Assert;
 
 import java.util.*;
 
@@ -150,6 +147,19 @@ public  class HelperReq {
             return new JSONObject(jsonResponse.getBody()).getInt(key);
 
         }
+
+    public static String getCountryCodeValue(JSONObject jsonObject){
+
+        return ((JSONObject)jsonObject).getJSONObject("country").get("code").toString();
+
+    }
+
+    public static String getNameOfRegion(JSONObject jsonObject){
+
+        return ((JSONObject)jsonObject).get("name").toString();
+
+    }
+
 
 
 }
