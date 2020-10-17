@@ -23,9 +23,7 @@ public class ReqWithParamPageSize extends ReqBase {
             };
         }
 
-        // Tests for page_size = empty, 1.5, one
-        // ...status code = 200
-        // ...structure of json = errorscheme
+
         @Test(dataProvider = "Data-Provider-Function-test14")
         public void test14(String q)  {
 

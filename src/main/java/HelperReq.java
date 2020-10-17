@@ -112,8 +112,6 @@ public  class HelperReq {
 
     }
 
-
-
      public static JSONObject getJSONfromJSONFile (String path) {
 
             return new JSONObject(

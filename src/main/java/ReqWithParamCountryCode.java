@@ -57,21 +57,15 @@ public class ReqWithParamCountryCode extends ReqBase {
                     HelperReq.sendRequestGetResponseString(PATH,q1+q2),
                     "items");
 
-            String code;
-
             HashSet<String> codeList = new HashSet<String>();
 
-            for (int i = 0; i < tmpObj.length() ; i++) {
+            tmpObj.forEach(item -> {
+                codeList.add(HelperReq.getCountryCodeValue((JSONObject)item));
+            });
 
-                JSONObject mJsonObject = (JSONObject)tmpObj.get(i);
-                code = mJsonObject.getJSONObject("country").get("code").toString();
-                codeList.add(code);
-
-            }
-
-            HashSet<String> xset = new HashSet<String>();
-            xset.add(q2);
-            assertEquals(codeList,xset);
+            HashSet<String> region = new HashSet<>();
+            region.add(q2);
+            assertEquals(codeList,region);
 
         }
 

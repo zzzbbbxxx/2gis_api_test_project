@@ -25,7 +25,6 @@ public class ReqDefault extends ReqBase {
         }
 
 
-
         @Test(description= "value of total must be equal real count of regions")
         public void testNumberOfRegions() {
 
@@ -41,11 +40,6 @@ public class ReqDefault extends ReqBase {
                         "...отличается от значения, возвращаемого в переменной total: "+ total);
 
         }
-
-
-
-
-
 
 
         @Test(description= "page_size default must be contains 15 regions")

@@ -26,9 +26,6 @@ public class ReqWithParamPage extends ReqBase {
         }
 
 
-
-
-
         //This function will provide the patameter data
         @DataProvider(name = "Data-Provider-Function_test10")
         public Object[][] parameterTestProvider_test10() {
