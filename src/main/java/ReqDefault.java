@@ -12,38 +12,18 @@ import static org.testng.Assert.assertEquals;
 
 public class ReqDefault extends ReqBase {
 
-
-
-        @Test(description= "value of total must be equal real count of regions")
-        public void testNumberOfRegions() {
-
-                int total = HelperReq.getValue("total");
-                int count = 0;
-
-                for (String page : Arrays.asList("?page=1", "?page=2", "?page=3"))
-                        count = count + HelperReq.getJsonArray(HelperReq.sendRequestGetJSON(PATH, page),
-                                "items").length();
-
-                Assert.assertEquals(count, total,
-                        "Фактическое количество городов: " + count +
-                                "...отличается от значения, возвращаемого в переменной total: "+ total);
-
-        }
-
         @Test(description= "page_size default must be contains 15 regions")
         public void testDefaultPageSize() {
 
-                org.json.JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,"");
+                int count = HelperReq.getCountOfRegions(PATH, "");
 
-                Assert.assertEquals(jsonObject.getJSONArray("items").length(),
+                Assert.assertEquals(count,
                                 15,
                                 "Count of regions in response by default must be equal: 15 \n");
 
         }
 
 
-
-        //This function will provide the patameter data
         @DataProvider(name = "Data-Provider-Function-test11")
         public Object[][] parameterTestProvider_test11() {
                 return new Object[][]{
@@ -135,9 +115,8 @@ public class ReqDefault extends ReqBase {
                 });
 
                 List<String> codeList = Arrays.asList("ru", "kg",  "kz", "cz");
-                Assert.assertTrue(HelperReq.arrayContainsElemFrom(
-                        codeSet,
-                        codeList),
+                Assert.assertTrue(
+                        HelperReq.arrayContainsElemFrom(codeSet, codeList),
                         "Code on this page: " + codeSet + "\n" +
                                 "Code by default must be in { ru, kg, kz, cz } \n ");
         }
