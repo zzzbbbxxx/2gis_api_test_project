@@ -109,7 +109,6 @@ public  class HelperReq {
 
         return tmpObj.length();
 
-
     }
 
      public static JSONObject getJSONfromJSONFile (String path) {
@@ -120,14 +119,20 @@ public  class HelperReq {
 
 
 
-        public static boolean arrayContainsElemFrom(HashSet<String> codeSet, List<String> codeList ) {
+        public static void islistsEquals(List<String> codeSet, List<String> codeList ) {
 
+            List<String> tmp = new ArrayList<String>();
 
             for (String codeS : codeSet) {
-                if (! arrayContainsElem(codeS,codeList)) return false;
+                if (!arrayContainsElem(codeS, codeList)) {
+                    tmp.add(codeS);
                 }
+            }
 
-            return true;
+            if (!tmp.isEmpty())
+                throw new AssertionError("This regions was not found:" + tmp);
+
+
         }
 
         public static boolean arrayContainsElem(String value, List<String> list ) {

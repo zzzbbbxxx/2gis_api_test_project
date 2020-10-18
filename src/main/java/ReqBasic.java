@@ -14,7 +14,7 @@ import static org.testng.Assert.assertEquals;
 public class ReqBasic extends ReqBase {
 
 
-        @Test(description= "structure of json are correct & contains all keys,params ")
+        @Test(description= "structure of json are correct & contains all keys, params ")
         public void testJSONisCorrect() {
 
                 JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,"");
@@ -23,7 +23,7 @@ public class ReqBasic extends ReqBase {
 
         }
 
-        @Test(description= "value of total must be equal real count of regions")
+        @Test(description= "value of total variable must be equal real count of regions")
         public void testTotalValue() {
 
                 int total = HelperReq.getValue("total");
