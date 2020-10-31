@@ -19,9 +19,9 @@ public class ReqDefault extends ReqBase {
                         "?page_size=5&page=4", "?page_size=5&page=5",
                         "?page_size=5&page=6")) {
 
-                        JSONArray tmpObj = HelperReq.getJsonArray(
-                                HelperReq.sendRequestGetJSON(PATH,page),
-                                "items");
+                        JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,page);
+
+                        JSONArray tmpObj = HelperReq.getJsonArray(jsonObject);
 
                         tmpObj.forEach(item -> {
                                 codeSet.add(HelperReq.getCountryCodeValue((JSONObject)item));
@@ -38,7 +38,7 @@ public class ReqDefault extends ReqBase {
 
 
         @Test(description = "page by default must be equal page=1" )
-        public void testDefaultPageNumber(String q1, String q2) {
+        public void testDefaultPageNumber() {
 
 
                 org.json.JSONObject jsonObject1 = HelperReq.sendRequestGetJSON(PATH, "?page=1");
@@ -63,7 +63,7 @@ public class ReqDefault extends ReqBase {
                 for (String page : Arrays.asList("?page=1", "?page=2", "?page=3")) {
 
                         JSONArray tmpObj = HelperReq.getJsonArray(
-                                HelperReq.sendRequestGetJSON(PATH, page), "items");
+                                HelperReq.sendRequestGetJSON(PATH, page));
 
                         tmpObj.forEach(item -> {
                                 String name = HelperReq.getNameOfRegion((JSONObject)item);
@@ -85,7 +85,9 @@ public class ReqDefault extends ReqBase {
         @Test(description= "page_size default must be contains 15 regions")
         public void testDefaultPageSize() {
 
-                int count = HelperReq.getCountOfRegions(PATH, "");
+                JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH, "");
+
+                int count = HelperReq.getCountOfRegions(jsonObject);
 
                 Assert.assertEquals(count,
                         15,

@@ -1,13 +1,6 @@
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
@@ -26,8 +19,10 @@ public class ReqBasic extends ReqBase {
         @Test(description= "value of total variable must be equal real count of regions")
         public void testTotalValue() {
 
-                int total = HelperReq.getValue("total");
-                int count = HelperReq.getCountOfRegions(PATH, "");
+                JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,"");
+
+                int total = HelperReq.getTotalValue(jsonResponse);
+                int count = HelperReq.getCountOfRegions(jsonResponse);
 
                 Assert.assertEquals(count, total,
                         "Фактическое количество городов: " + count +

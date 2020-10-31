@@ -1,8 +1,3 @@
-import kong.unirest.HttpResponse;
-import kong.unirest.Unirest;
-import org.json.JSONObject;
-
-import static org.testng.Assert.assertEquals;
 
 public class ReqBase {
 
@@ -16,5 +11,8 @@ public class ReqBase {
     final public static String Q_SCHEME_FOR_UNSUCCESS_SEARCH_FOR_3_SYMBOLS_JSON = "q/success_scheme_v3.json";
     final public static String ERROR_SCHEMA_FOR_0_1_2_SYMBOLS_JSON = "q/error_schema_v1.json";
     final public static String ERROR_SCHEMA_FOR_30_SYMBOLS_JSON = "q/error_schema_v2.json";
-
+    final public static String ERROR_SCHEMA_FOR_INTEGER_SYMBOLS_JSON = "page_size/error_schema_v1.json";
+    final public static String ERROR_SCHEMA_FOR_NON5_10_15_JSON  = "page_size/error_schema_v2.json";
+    final public static String EXAMPLE_PAGE_ERROR_V2 = "page_size/json_error_example_v2.json";
+    final public static String ERROR_SCHEMA_COUNTRY_CODE = "countrycode/error_schema.json";
 }

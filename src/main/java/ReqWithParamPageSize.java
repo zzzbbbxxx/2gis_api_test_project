@@ -29,7 +29,7 @@ public class ReqWithParamPageSize extends ReqBase {
 
             JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,q);
 
-            HelperReq.validateSchema("page_size\\error_schema_v1.json", jsonObject);
+            HelperReq.validateSchema(ERROR_SCHEMA_FOR_INTEGER_SYMBOLS_JSON, jsonObject);
 
         }
 
@@ -53,8 +53,8 @@ public class ReqWithParamPageSize extends ReqBase {
             JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,q);
 
             HelperReq.validateSchemaV2
-                    ("page_size\\error_schema_v2.json",
-                  "page_size\\json_error_example_v2.json",
+                    (ERROR_SCHEMA_FOR_NON5_10_15_JSON,
+                            EXAMPLE_PAGE_ERROR_V2,
                             jsonObject);
 
         }
@@ -76,7 +76,9 @@ public class ReqWithParamPageSize extends ReqBase {
         description = "items in JSON must be equal page_size")
         public void test16(String q, int i)  {
 
-            int size = HelperReq.getCountOfRegions(PATH,q);
+            JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,"");
+
+            int size = HelperReq.getCountOfRegions(jsonResponse);
 
             Assert.assertEquals(size, i,
                     "Count regions in response by default must be equel: " + i);

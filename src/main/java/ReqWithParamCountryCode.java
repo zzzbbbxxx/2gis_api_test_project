@@ -31,7 +31,7 @@ public class ReqWithParamCountryCode extends ReqBase {
 
             JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,q);
 
-            HelperReq.validateSchema("countrycode/error_schema.json", jsonObject);
+            HelperReq.validateSchema(ERROR_SCHEMA_COUNTRY_CODE, jsonObject);
 
         }
 
@@ -53,9 +53,9 @@ public class ReqWithParamCountryCode extends ReqBase {
         description = "code for regions in response must be equal code in param")
         public void test8(String q1, String q2) {
 
-            JSONArray tmpObj = HelperReq.getJsonArray(
-                    HelperReq.sendRequestGetResponseString(PATH,q1+q2),
-                    "items");
+            JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,q1+q2);
+
+            JSONArray tmpObj = HelperReq.getJsonArray(jsonResponse);
 
             HashSet<String> codeList = new HashSet<String>();
 
