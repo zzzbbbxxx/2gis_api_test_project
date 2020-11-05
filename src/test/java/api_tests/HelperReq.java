@@ -36,7 +36,7 @@ public  class HelperReq {
 
         return new JSONObject(
                 new JSONTokener(
-                        ReqBase.class.getClassLoader().getResourceAsStream(path)));
+                        HelperReq.class.getClassLoader().getResourceAsStream(path)));
 
     }
 

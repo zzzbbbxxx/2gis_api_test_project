@@ -13,7 +13,7 @@ public class TestWithParamPage extends ReqBase {
 
             JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH,"?page=-1");
 
-            HelperReq.validateSchema("page\\error_schema_v2.json",
+            HelperReq.validateSchema("json\\page\\error_schema_v2.json",
                             jsonObject);
 
         }
@@ -38,7 +38,7 @@ public class TestWithParamPage extends ReqBase {
 
             JSONObject jsonObject = HelperReq.sendRequestGetJSON(PATH, q);
 
-            HelperReq.validateSchema("page\\error_schema_v1.json", jsonObject);
+            HelperReq.validateSchema("json\\page\\error_schema_v1.json", jsonObject);
 
         }
 
