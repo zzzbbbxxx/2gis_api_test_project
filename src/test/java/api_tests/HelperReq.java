@@ -1,3 +1,5 @@
+package api_tests;
+
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import org.everit.json.schema.Schema;
@@ -30,10 +32,12 @@ public  class HelperReq {
 
     }
 
-    public static JSONObject getJSONfromJSONFile (String path) {
+    public static JSONObject getJSONfromJSONFile(String path) {
 
         return new JSONObject(
-                new JSONTokener(ReqWithParamQ.class.getResourceAsStream(path)));
+                new JSONTokener(
+                        ReqBase.class.getClassLoader().getResourceAsStream(path)));
+
     }
 
 
@@ -41,6 +45,8 @@ public  class HelperReq {
 
         org.json.JSONObject jsonSchema = new org.json.JSONObject
                 (new JSONTokener(String.valueOf(getJSONfromJSONFile(pathToSchema))));
+
+
 
         Schema schema = SchemaLoader.load(jsonSchema);
 

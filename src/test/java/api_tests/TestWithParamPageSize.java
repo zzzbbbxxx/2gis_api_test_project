@@ -1,14 +1,13 @@
-import kong.unirest.HttpResponse;
-import org.json.JSONArray;
+package api_tests;
+
 import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class ReqWithParamPageSize extends ReqBase {
+public class TestWithParamPageSize extends ReqBase {
 
 
 
@@ -80,7 +79,7 @@ public class ReqWithParamPageSize extends ReqBase {
 
             int size = HelperReq.getCountOfRegions(jsonResponse);
 
-            Assert.assertEquals(size, i,
+            assertEquals(size, i,
                     "Count regions in response by default must be equel: " + i);
 
         }

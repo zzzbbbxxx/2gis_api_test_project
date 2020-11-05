@@ -1,14 +1,14 @@
+package api_tests;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.*;
 
 import static org.testng.Assert.assertEquals;
 
-public class ReqDefault extends ReqBase {
+public class TestDefaultValue extends ReqBase {
 
         @Test(description = "country_code by default must be show all regions for all countries")
         public void testDefaultCountryCode() {
@@ -75,7 +75,7 @@ public class ReqDefault extends ReqBase {
                         });
                 }
 
-                Assert.assertEquals(listOfRepeatRegions.size(),
+                assertEquals(listOfRepeatRegions.size(),
                         0,"Repeating regions: " + listOfRepeatRegions.toString());
 
         }
@@ -89,7 +89,7 @@ public class ReqDefault extends ReqBase {
 
                 int count = HelperReq.getCountOfRegions(jsonObject);
 
-                Assert.assertEquals(count,
+                assertEquals(count,
                         15,
                         "Count of regions in response by default must be equal: 15 \n");
 

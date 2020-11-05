@@ -1,18 +1,11 @@
-import kong.unirest.HttpResponse;
-import org.json.JSONArray;
+package api_tests;
+
 import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
-public class ReqWithParamPage extends ReqBase {
+public class TestWithParamPage extends ReqBase {
 
 
         @Test(description = "page must be > 0")

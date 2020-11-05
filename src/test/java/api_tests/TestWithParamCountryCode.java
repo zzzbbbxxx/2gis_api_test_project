@@ -1,4 +1,5 @@
-import kong.unirest.HttpResponse;
+package api_tests;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.annotations.DataProvider;
@@ -10,7 +11,7 @@ import java.util.HashSet;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class ReqWithParamCountryCode extends ReqBase {
+public class TestWithParamCountryCode extends ReqBase {
 
 
 

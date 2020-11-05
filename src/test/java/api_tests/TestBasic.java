@@ -1,10 +1,13 @@
+package api_tests;
+
 import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class ReqBasic extends ReqBase {
+
+public class TestBasic extends ReqBase {
+
 
 
         @Test(description= "structure of json are correct & contains all keys, params ")
@@ -24,7 +27,7 @@ public class ReqBasic extends ReqBase {
                 int total = HelperReq.getTotalValue(jsonResponse);
                 int count = HelperReq.getCountOfRegions(jsonResponse);
 
-                Assert.assertEquals(count, total,
+                assertEquals(count, total,
                         "Фактическое количество городов: " + count +
                                 "...отличается от значения, возвращаемого в переменной total: "+ total);
 

@@ -1,9 +1,9 @@
-import kong.unirest.HttpResponse;
-import org.json.JSONObject;
+package api_tests;
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class ReqWithParamQ extends ReqBase {
+public class TestWithParamQ extends ReqBase {
 
 
 
