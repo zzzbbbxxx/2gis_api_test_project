@@ -75,7 +75,7 @@ public class TestWithParamPageSize extends ReqBase {
         description = "items in JSON must be equal page_size")
         public void test16(String q, int i)  {
 
-            JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,"");
+            JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,q);
 
             int size = HelperReq.getCountOfRegions(jsonResponse);
 

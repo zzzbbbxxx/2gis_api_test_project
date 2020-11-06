@@ -10,7 +10,8 @@ public class TestBasic extends ReqBase {
 
 
 
-        @Test(description= "structure of json are correct & contains all keys, params ")
+        @Test(groups = {"smoke"},
+                description= "structure of json are correct & contains all keys, params ")
         public void testJSONisCorrect() {
 
                 JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,"");
@@ -19,7 +20,8 @@ public class TestBasic extends ReqBase {
 
         }
 
-        @Test(description= "value of total variable must be equal real count of regions")
+        @Test(groups = {"smoke"},
+                description= "value of total variable must be equal real count of regions")
         public void testTotalValue() {
 
                 JSONObject jsonResponse = HelperReq.sendRequestGetJSON(PATH,"");

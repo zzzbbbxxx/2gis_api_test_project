@@ -50,7 +50,7 @@ public class TestWithParamCountryCode extends ReqBase {
                 };
             }
 
-        @Test(dataProvider = "Data-Provider-Function_test8",
+        @Test(groups = {"smoke"}, dataProvider = "Data-Provider-Function_test8",
         description = "code for regions in response must be equal code in param")
         public void test8(String q1, String q2) {
 

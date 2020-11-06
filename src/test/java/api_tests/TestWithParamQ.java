@@ -47,7 +47,8 @@ public class TestWithParamQ extends ReqBase {
                     };
         }
 
-        @Test(description = "Successful search by symbols",
+        @Test(groups = {"smoke"},
+                description = "Successful search by symbols",
               dataProvider = "Data-Provider-Function-test2")
         public void successfulSearchTest(String q) {
 
